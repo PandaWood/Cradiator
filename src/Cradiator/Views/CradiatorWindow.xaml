@@ -1,12 +1,24 @@
 ﻿<Window
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="clr-namespace:Cradiator.ViewModels"
+    xmlns:model="clr-namespace:Cradiator.Model"
     x:Class="Cradiator.Views.CradiatorWindow"
     WindowStartupLocation="CenterScreen"
     Icon="../Images/Cradiator.ico"
     Title="Cradiator"
     Background="Black" 
 	Height="400" Width="600">
+
+    <!--<Window.DataContext>
+        <vm:DesignerViewDataViewModel  AmountOK="15" AmountNotOK="5" OKPercentage="75"  AmountTotal="20" ShowOnlyBroken="True" ShowAllOK="Visible" ShowProjects="Collapsed" AmountHeader="Project count : 20">
+            <vm:DesignerViewDataViewModel.Projects>
+                <vm:ProjectStatusViewModel    Name="P1" />
+                <vm:ProjectStatusViewModel    Name="P2" />
+                <vm:ProjectStatusViewModel    Name="P3" />
+            </vm:DesignerViewDataViewModel.Projects>
+        </vm:DesignerViewDataViewModel >
+    </Window.DataContext>-->
 
     <Window.Resources>
         <Style x:Key="LogoStyle" TargetType="{x:Type TextBlock}">
@@ -34,18 +46,23 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+
                 </Grid.ColumnDefinitions>
+
 
                 <TextBlock Name="titleText" Text="Cradiator" 
                            Grid.Column="0"
                            Style="{StaticResource LogoStyle}">
                 </TextBlock>
 
-                <TextBlock Grid.Column="2" VerticalAlignment="Center" Padding="2">
+                <TextBlock Grid.Column="2"   Text="{Binding AmountHeader}" Foreground="LightBlue" VerticalAlignment="Center" Margin="4" />
+
+                <TextBlock Grid.Column="3" VerticalAlignment="Center" Padding="2">
                     <Hyperlink Name="settingsLink" Style="{StaticResource HyperlinkStyle}">Settings (F12)</Hyperlink>
                 </TextBlock>
 
-                <TextBlock Name="countdownText" Text="00:00"
+                <TextBlock Name="countdownText" Text="00:00" HorizontalAlignment="Center"
                            Grid.Column="1" 
                            FontFamily="Verdana" FontSize="24" 
                            Margin="0,-11,0,-10"
@@ -65,9 +82,59 @@
 
         </Border>
 
-        <Viewbox DockPanel.Dock="Top" Stretch="Fill">
-            <ItemsControl ItemsSource="{Binding}" Style="{DynamicResource SkinStyle}" />
+        <Viewbox DockPanel.Dock="Top"  Stretch="Fill" Visibility="{Binding ShowProjects}">
+            <ItemsControl ItemsSource="{Binding Projects}" Style="{DynamicResource SkinStyle}" />
         </Viewbox>
+
+        
+        
+        <Grid DockPanel.Dock="Top"   Visibility="{Binding ShowAllOK}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="75*" />
+                <RowDefinition Height="25*" />
+            </Grid.RowDefinitions>
+            <Image Grid.Row="0" Source="../Images/smiley.jpg" Stretch="Uniform" />
+            <Viewbox Grid.Row="1"  >
+                <Label Content="{Binding ViewName}" FontWeight="Bold" >
+                    <Label.Foreground>
+                        <LinearGradientBrush  >
+                            <GradientStop Color="OrangeRed" Offset="0.0" />
+                            <GradientStop Color="Orange" Offset="0.40" />
+                            <GradientStop Color="LightGreen" Offset="0.60" />
+                            <GradientStop Color="Orange" Offset="0.80" />
+                            <GradientStop Color="OrangeRed" Offset="1.00" />
+                        </LinearGradientBrush >
+                    </Label.Foreground>
+                </Label>
+            </Viewbox>
+        </Grid>
+
+
+
+        <Grid DockPanel.Dock="Top"   Visibility="{Binding ShowOutOfDateProjects}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="75*" />
+                <RowDefinition Height="25*" />
+            </Grid.RowDefinitions>
+            <Viewbox Grid.Row="0"  Stretch="Fill" >
+                <ItemsControl ItemsSource="{Binding Projects}" Style="{DynamicResource SkinStyle}" />
+            </Viewbox>
+            <Viewbox Grid.Row="1"  >
+                <Label Content="{Binding ViewName}" FontWeight="Bold" >
+                    <Label.Foreground>
+                        <LinearGradientBrush  >
+                            <GradientStop Color="OrangeRed" Offset="0.0" />
+                            <GradientStop Color="Orange" Offset="0.40" />
+                            <GradientStop Color="LightGreen" Offset="0.60" />
+                            <GradientStop Color="Orange" Offset="0.80" />
+                            <GradientStop Color="OrangeRed" Offset="1.00" />
+                        </LinearGradientBrush >
+                    </Label.Foreground>
+                </Label>
+            </Viewbox>
+        </Grid>
+
+
 
     </DockPanel>
 </Window>

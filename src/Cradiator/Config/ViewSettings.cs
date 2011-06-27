@@ -53,6 +53,84 @@ namespace Cradiator.Config
             }
         }
 
+
+        protected string _viewName;
+        public string ViewName
+        {
+            get { return _viewName; }
+            set
+            {
+                if (_viewName == value) return;
+                _viewName = value;
+                Notify("ViewName");
+            }
+        }
+
+
+
+        protected bool _showOnlyBroken;
+        public bool ShowOnlyBroken
+        {
+            get { return _showOnlyBroken; }
+            set
+            {
+                if (_showOnlyBroken == value) return;
+                _showOnlyBroken = value;
+                Notify("ShowOnlyBroken");
+            }
+        }
+
+
+        protected string _serverNameRegEx;
+        public string ServerNameRegEx
+        {
+            get { return _serverNameRegEx;}
+            set
+            {
+                if (_serverNameRegEx == value) return;
+                   _serverNameRegEx = value;
+                Notify("ServerNameRegEx");
+            }
+        }
+
+        protected bool _ShowServerName;
+        public bool ShowServerName
+        {
+            get { return _ShowServerName; }
+            set
+            {
+                if (_ShowServerName == value) return;
+                _ShowServerName = value;
+                Notify("ShowServerName");
+            }
+        }
+
+
+        private bool _showOutOfDate;
+        public bool ShowOutOfDate
+        {
+            get { return _showOutOfDate; }
+            set
+            {
+                if (_showOutOfDate == value) return;
+                _showOutOfDate = value;
+                Notify("ShowOutOfDate");
+            }
+        }
+
+        private int _outOfDateDifferenceInMinutes;
+        public int OutOfDateDifferenceInMinutes
+        {
+            get { return _outOfDateDifferenceInMinutes; }
+            set
+            {
+                if (_outOfDateDifferenceInMinutes == value) return;
+                _outOfDateDifferenceInMinutes = value;
+                Notify("OutOfDateDifferenceInMinutes");
+            }
+        }
+
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void Notify(string propertyName)
@@ -60,5 +138,7 @@ namespace Cradiator.Config
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
+
+
     }
 }

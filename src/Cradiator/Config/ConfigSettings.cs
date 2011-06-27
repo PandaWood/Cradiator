@@ -54,7 +54,13 @@ namespace Cradiator.Config
 						URL = URL,
 						ProjectNameRegEx = ProjectNameRegEx,
 						CategoryRegEx = CategoryRegEx,
-						SkinName = SkinName,
+						ServerNameRegEx = ServerNameRegEx,
+                        SkinName = SkinName,
+                        ViewName = ViewName,
+                        ShowOnlyBroken = ShowOnlyBroken,
+                        ShowServerName = ShowServerName,
+                        ShowOutOfDate = ShowOutOfDate,
+                        OutOfDateDifferenceInMinutes = OutOfDateDifferenceInMinutes
 					});
 				}
 
@@ -103,6 +109,13 @@ namespace Cradiator.Config
 			SkinName = q.SkinName;
 			ProjectNameRegEx = q.ProjectNameRegEx;
 			CategoryRegEx = q.CategoryRegEx;
+            ServerNameRegEx = q.ServerNameRegEx;
+            ViewName = q.ViewName;
+            ShowOnlyBroken = q.ShowOnlyBroken;
+            ShowServerName = q.ShowServerName;
+            ShowOutOfDate = q.ShowOutOfDate;
+            OutOfDateDifferenceInMinutes = q.OutOfDateDifferenceInMinutes;
+
 		}
 
 		private void LoadViewSettings()
