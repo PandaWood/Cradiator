@@ -2,7 +2,8 @@ Cradiator's issue management is still at <http://cradiator.codeplex.com/> (wiki,
 Cradiator now lives on GitHub (source code)
 
 Note that TeamCity, as of v7.0, now supports CCTray compatible XML - http://confluence.jetbrains.com/display/TW/REST+API+Plugin#RESTAPIPlugin-CCTray
-So the special plugin we wrote (at https://github.com/demyte/Cradiator-TeamCity-Plugin) is no longer required for Cradiator to work
+
+So the special plugin we wrote (at https://github.com/demyte/Cradiator-TeamCity-Plugin) is no longer required for Cradiator to work with TeamCity
 
 ## Contributors
 
