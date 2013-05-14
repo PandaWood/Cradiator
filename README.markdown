@@ -18,7 +18,7 @@ So the special plugin we wrote (at https://github.com/demyte/Cradiator-TeamCity-
  * If more than 1 view is specified, then the view is switched (on a rotation cycle) at each poll interval.
  * Each view contains a url & other base settings as documented below
     
-3. view/url - The (xml) status report URL
+3. __view/url__ - The (xml) status report URL
  * eg for CCNet - http://ccnetlive.thoughtworks.com/ccnet/XmlStatusReport.aspx
  * eg for Java  - http://www.spice-3d.org/cruise/xml
  * eg for Ruby (.rb) http://cruisecontrolrb.thoughtworks.com/XmlStatusReport.aspx
