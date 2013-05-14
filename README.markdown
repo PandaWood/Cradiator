@@ -18,12 +18,12 @@ So the special plugin we wrote (at https://github.com/demyte/Cradiator-TeamCity-
  * If more than 1 view is specified, then the view is switched (on a rotation cycle) at each poll interval.
  * Each view contains a url & other base settings as documented below
     
-    * view/url - The (xml) status report URL
-     * eg for CCNet - http://ccnetlive.thoughtworks.com/ccnet/XmlStatusReport.aspx
-     * eg for Java  - http://www.spice-3d.org/cruise/xml
-     * eg for Ruby (.rb) http://cruisecontrolrb.thoughtworks.com/XmlStatusReport.aspx
-     * If URL ends with 'ccnet' "XmlStatusReport.aspx" will be auto-appended
-     * Debug-Mode - prepend the URL with the word 'debug' - this switches to using an xml file in the bin folder named 'DummyProjectStatus.xml' instead of connecting to the WebService - useful for testing /screenshots etc
+  * view/url - The (xml) status report URL
+  * eg for CCNet - http://ccnetlive.thoughtworks.com/ccnet/XmlStatusReport.aspx
+  * eg for Java  - http://www.spice-3d.org/cruise/xml
+  * eg for Ruby (.rb) http://cruisecontrolrb.thoughtworks.com/XmlStatusReport.aspx
+  * If URL ends with 'ccnet' "XmlStatusReport.aspx" will be auto-appended
+  * Debug-Mode - prepend the URL with the word 'debug' - this switches to using an xml file in the bin folder named 'DummyProjectStatus.xml' instead of connecting to the WebService - useful for testing /screenshots etc
                                                                                                                                                                                     
 3. __multi-url__ - URL can be split (using space as a delimiter), to refer to multiple urls. 
      - eg value="http://url1 http://url2"
