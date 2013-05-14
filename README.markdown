@@ -2,8 +2,7 @@ Cradiator's issue management is still at <http://cradiator.codeplex.com/> (wiki,
 Cradiator now lives on GitHub (source code)
 
 Note that TeamCity, as of v7.0, now supports CCTray compatible XML - http://confluence.jetbrains.com/display/TW/REST+API+Plugin#RESTAPIPlugin-CCTray
-
-So the special plugin we wrote (at https://github.com/demyte/Cradiator-TeamCity-Plugin) is no longer required for Cradiator to work with TeamCity
+So the special plugin we wrote (at https://github.com/demyte/Cradiator-TeamCity-Plugin) is no longer required
 
 ## Contributors
 
@@ -13,79 +12,81 @@ So the special plugin we wrote (at https://github.com/demyte/Cradiator-TeamCity-
 
 ### Config documentation (serving as a rough functionality guide)
 
-* Polling Frequency - In seconds. Default is 30
+1. __Polling Frequency__ - In seconds. Default is 30
 
-* views/view - Each 'view' can be defined in this xml section. 
-- If more than 1 view is specified, then the view is switched (on a rotation cycle) at each poll interval.
-- Each view contains a url & other base settings as documented below
+2. __Views/view__ - Each 'view' can be defined in this xml section 
+ * If more than 1 view is specified, then the view is switched (on a rotation cycle) at each poll interval.
+ * Each view contains a url & other base settings as documented below
+    
+    * view/url - The (xml) status report URL
+     * eg for CCNet - http://ccnetlive.thoughtworks.com/ccnet/XmlStatusReport.aspx
+     * eg for Java  - http://www.spice-3d.org/cruise/xml
+     * eg for Ruby (.rb) http://cruisecontrolrb.thoughtworks.com/XmlStatusReport.aspx
+     * If URL ends with 'ccnet' "XmlStatusReport.aspx" will be auto-appended
+     * Debug-Mode - prepend the URL with the word 'debug' - this switches to using an xml file in the bin folder named 'DummyProjectStatus.xml' instead of connecting to the WebService - useful for testing /screenshots etc
+                                                                                                                                                                                    
+3. __multi-url__ - URL can be split (using space as a delimiter), to refer to multiple urls. 
+     - eg value="http://url1 http://url2"
+     - All project data is collected into one screen output 
+     - DEBUG MODE (ie prepending word 'debug' to URL) overrides the multiurl feature; no multiurls are read if debug is on
 	
-* view/url - The (xml) status report URL
-- eg for CCNet - http://ccnetlive.thoughtworks.com/ccnet/XmlStatusReport.aspx
-- eg for Java  - http://www.spice-3d.org/cruise/xml
-- eg for Ruby (.rb) http://cruisecontrolrb.thoughtworks.com/XmlStatusReport.aspx (If URL ends with 'ccnet' "XmlStatusReport.aspx" will be auto-appended)
-[debug-mode] - prepend the URL with the word 'debug' - this switches to using an xml file in the bin folder named 'DummyProjectStatus.xml' instead of connecting to the WebService - useful for testing /screenshots etc
-		 
-[multi-url] - URL can be split (using space as a delimiter), to refer to multiple urls. 
-- eg value="http://url1 http://url2"
-- All project data is collected into one screen output 
-- DEBUG MODE overrides the multiurl feature; no multiurls are read if debug
+4. __view/project-regex__ - RegEx used to filter which projects are included (by name)
+    * Defaults to ".*" (even if config is "")
 	
-* view/project-regex - RegEx used to filter which projects are included (by name)
-- Defaults to ".*" (even if config = "")
-	
-* view/category-regex - as for ProjectNameRegEx but filters by category name
+5. __view/category-regex__ - as for ProjectNameRegEx but filters by category name
 
-* view/server-regex - as for ProjectNameRegEx but filters by server name 
-- for ccnet this is the name of the build server as defined in dashboard.config in dashboard\remoteServices\servers\server
+6. __view/server-regex__ - as for ProjectNameRegEx but filters by server name
+    * for ccnet this is the name of the build server as defined in dashboard.config in dashboard\remoteServices\servers\server
 
-* view/name - the name for this view, will be shown when ShowOnlyBroken = true and there are no broken projects
+7. __view/name__ - the name for this view, will be shown when ShowOnlyBroken = true and there are no broken projects
 
-* view/showServerName - shows the servername below the project name if true, handy if you monitor multiple servers with identical project names
+* __view/showServerName__ - shows the servername below the project name if true, handy if you monitor multiple servers with identical project names
 
-
-* view/skin - Currently 3 choices 
-(1) Grid - arranged in a grid format
-(2) Stack - arranged in a stack (ie top-to-bottom listbox type) format
-(3) StackPhoto - same as Stack but shows an image of the build breaker as well as text 
-- last/first listed - is the last/first person to commit while build is broken - where 'last/first' 
-is dependent on the setting 'BreakerGuiltStrategy' (below)
+* __view/skin__ - Currently 3 choices 
+    1. Grid - arranged in a grid format
+    2. Stack - arranged in a stack (ie top-to-bottom listbox type) format
+    3. StackPhoto - same as Stack but shows an image of the build breaker as well as text 
+    
+    
+    last/first listed - is the last/first person to commit while build is broken - where 'last/first' 
+is dependent on the setting 'BreakerGuiltStrategy' (below) - and not necessarily honored by the server producing XML, so use with a grain of salt
 
 
-[photo/image] functionality, requires a sub-folder named 'images' (relative to folder in which
-the Cradiator.exe resides) with a JPEG ([username].jpg) corresponding to each username (auto-created by the installer)
+* __photo/image__ - requires a sub-folder named 'images' (relative to folder in which
+the Cradiator.exe resides) with a JPEG ([username].jpg) corresponding to each username (the folder is created if you use the Cradiator installer)
  - The JPEG file must be named using the username - eg bsimpson requires a filepath 'images/bsimpson.jpg'
  - If a file/photo does not exist for a user, everything will still work as normal (ie it's not considered an error)
 	
-* ShowCountdown - 'true' or 'false' (case insensitive) ,so { True False TRUE FALSE } are all valid
-- Shows a clock that counts down the 'time to go' before refreshing the screen (updated approx every second)
+* __ShowCountdown__ - 'true' or 'false' (case insensitive) ,so { True False TRUE FALSE } are all valid
+    - Shows a clock that counts down the 'time to go' before refreshing the screen (updated approx every second)
 	
-* PlaySounds - true/false, whether to play sounds on events (described below) (.WAV files only)
-* PlaySpeech - true/false, whether to speak (ie use SpeechSynthesizer) on certain build events - is configurable (see below)  
+* __PlaySounds__ - true/false, whether to play sounds on events (described below) (.WAV files only)
+* __PlaySpeech__ - true/false, whether to speak (ie use SpeechSynthesizer) on certain build events. What is spoken is also configurable (see _FixedBuildText_ & _BrokenBuildText_ below)  
 
-* BrokenBuildSound - the filename (without path) of the .WAV file
-- The file is assumed to be in a sub-folder named 'sounds' (relative to the folder in which Cradiator.exe resides) 
-- A 'BrokenBuildSound' plays in response to a project that starts 1) not Broken (FAILURE|EXCEPTION) followed by 2) Broken  
+* __BrokenBuildSound__ - the filename (without path) of the .WAV file
+    - The file is assumed to be in a sub-folder named 'sounds' (relative to the folder in which Cradiator.exe resides) 
+    - A 'BrokenBuildSound' plays in response to a project that starts 1) not Broken (FAILURE|EXCEPTION) followed by 2) Broken  
 	
-* FixedBuildSound - as for BrokenBuildSound, but plays in the case of 1) Broken (FAILURE|EXCEPTION) followed by 2) SUCCESS
+* __FixedBuildSound__ - as for BrokenBuildSound, but plays in the case of 1) Broken (FAILURE|EXCEPTION) followed by 2) SUCCESS
 
-* BrokenBuildText - text can be just text or include variables which are replaced at runtime
+* __BrokenBuildText__ - text can be just text or include variables which are replaced at runtime
 [Plain Text] - Voice automatically speaks the project name, followed by configured text eg voice speaks "Project1 [your text goes here]." 
  - Default value is "is broken"
 [Custom] - Can include 2 variables in your text (1) $ProjectName$ (2) $Breaker$ (only for broken builds)) 
  - the variables are used to specify values that are known only at run time, for that particular project 
  -  eg "$ProjectName$ is broken, $Breaker$, you're fired!"
-				
-* FixedBuildText - as for BrokenBuildText - default value is "is fixed"
 
-* SpeechVoiceName - The (SAPI) voice name used in speech synthesis.
-- The voice name does not have to be exactly correct, for example 'william' is close enough to select the 'Cepstral William' voice. 
-- If voice name is ambiguous then first matching name, in alphabetical order, is selected
+* __FixedBuildText__ - as for BrokenBuildText - default value is "is fixed"
 
-* usernames - a section for mapping usernames to real or full-length names for use by the SpeechSynthesizer 
-- used when figuring the $Breaker$ variable in Fixed/BrokenBuildText eg if your username is 'jbloggs' - this may 
+* __SpeechVoiceName__ - The (SAPI) voice name used in speech synthesis
+ - The voice name does not have to be exactly correct, for example 'william' is close enough to select the 'Cepstral William' voice. 
+ - If voice name is ambiguous then first matching name, in alphabetical order, is selected
+
+* __usernames__ - a section for mapping usernames to real or full-length names for use by the SpeechSynthesizer 
+ - used when figuring the $Breaker$ variable in Fixed/BrokenBuildText eg if your username is 'jbloggs' - this may 
 not sound comprehensible when spoken by the voice synthesizer, hence you can map this username to 
 'Johann Bloggs' via this config. 
-- A username of 'jsmith' is mapped to 'John Smith' by default, in app.config, to make the format required obvious
+ - A username of 'jsmith' is mapped to 'John Smith' by default, in app.config, to make the format required obvious
 					
-* BreakerGuiltStrategy - 'First' or 'Last'. 
-- How to determine the 'Breaker', is the 'First' build breaker always guilty?, or do subsequent committers ('Last' breaker) assume guilt when they commit over a breaking build?
+* __BreakerGuiltStrategy__ - 'First' or 'Last' 
+ - How to determine the 'Breaker', is the 'First' build breaker always guilty?, or do subsequent committers ('Last' breaker) assume guilt when they commit over a breaking build?
