@@ -126,6 +126,5 @@ namespace Cradiator.Model
 		{
 			_viewSettings = newSettings as IViewSettings;
 		}
-  
 	}
 }

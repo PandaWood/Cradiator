@@ -11,6 +11,7 @@ namespace Cradiator.Views
 
 		readonly ICradiatorView _mainView;
 		DispatcherTimer _timer;
+		private Storyboard _fadeStoryBoard;
 
 		public MessageWindow()
 		{
@@ -28,9 +29,9 @@ namespace Cradiator.Views
 
 			// set the timer to auto-close this window before next screenupdate (delay = 80% of pollFrequency)
 			_timer = new DispatcherTimer
-			         {
-			         	Interval = TimeSpan.FromSeconds(pollFrequency / PercentageOfPollFrequency)
-			         };
+					 {
+						Interval = TimeSpan.FromSeconds(pollFrequency / PercentageOfPollFrequency)
+					 };
 
 			_timer.Tick += Timer_Tick;
 			_timer.Start();
@@ -66,9 +67,9 @@ namespace Cradiator.Views
 		{
 			Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
 			{
-				var story = (Storyboard) FindResource("FadeAway");
-				story.Completed += FadeAway_Completed;
-                BeginStoryboard(story);
+				_fadeStoryBoard = (Storyboard) FindResource("FadeAway");
+				_fadeStoryBoard.Completed += FadeAway_Completed;
+				BeginStoryboard(_fadeStoryBoard);
 			}));
 		}
 
@@ -79,7 +80,19 @@ namespace Cradiator.Views
 
 		protected override void OnClosing(CancelEventArgs e)
 		{
-			_mainView.ScreenUpdating -= MainScreenUpdating;
+			if (_mainView != null)
+			{
+				_mainView.ScreenUpdating -= MainScreenUpdating;
+				_mainView.Closing -= MainWindowClosing;
+			}
+			if (_timer != null)
+			{
+				_timer.Tick -= Timer_Tick;
+			}
+			if (_fadeStoryBoard != null)
+			{
+				_fadeStoryBoard.Completed -= FadeAway_Completed;
+			}
 		}
 	}
 }

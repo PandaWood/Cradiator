@@ -26,7 +26,6 @@ namespace Cradiator.Model
 		readonly ICradiatorView _view;
 		readonly DispatcherTimer _countdownTimer;
 		IDateTimeNow _date = new DateTimeNow();
-
 		public TimeSpan PollFrequency { private get; set; }
 
 		public IDateTimeNow Date
@@ -50,18 +49,29 @@ namespace Cradiator.Model
 			PollFrequency = configSettings.PollFrequencyTimeSpan;
 
 			_countdownTimer = new DispatcherTimer { Interval = OneSecond };
-			_countdownTimer.Tick += ((sender, e) => Execute());
+			_countdownTimer.Tick += CountdownTimer_Tick;
 			Reset();
+		}
+
+		void CountdownTimer_Tick(object sender, EventArgs e)
+		{
+			Execute();
 		}
 
 		public void Start()
 		{
-			if (IsSwitchedOn) _countdownTimer.Start();
+			if (IsSwitchedOn)
+			{
+				_countdownTimer.Start();
+			}
 		}
 
 		public void Stop()
 		{
-			if (IsSwitchedOn) _countdownTimer.Stop();
+			if (IsSwitchedOn)
+			{
+				_countdownTimer.Stop();
+			}
 		}
 
 		public DateTime Reset()

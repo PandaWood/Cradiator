@@ -15,9 +15,9 @@ namespace Cradiator.Views
 		readonly IConfigFileWatcher _configFileWatcher;
 
 		public CradiatorPresenter(ICradiatorView view, IConfigSettings configSettings,
-		                          IConfigFileWatcher configFileWatcher, ISkinLoader skinLoader,
-		                          ConfigChangeHandlerFarm changeHandlerFarm, IScreenUpdater screenUpdater,
-		                          InputBindingAdder inputBindingAdder)
+								  IConfigFileWatcher configFileWatcher, ISkinLoader skinLoader,
+								  ConfigChangeHandlerFarm changeHandlerFarm, IScreenUpdater screenUpdater,
+								  InputBindingAdder inputBindingAdder)
 		{
 			_view = view;
 			view.Presenter = this;
