@@ -12,7 +12,7 @@ namespace Cradiator.App
 	/// </summary>
 	public class CradiatorApp : Application
 	{
-        static readonly ILog _log = LogManager.GetLogger(typeof(CradiatorApp).Name);
+		static readonly ILog _log = LogManager.GetLogger(typeof(CradiatorApp).Name);
 
 		/// <summary>
 		/// Application Entry Point
@@ -20,28 +20,28 @@ namespace Cradiator.App
 		[STAThread]
 		public static void Main()
 		{
-		    try
-		    {
-		        var app = new CradiatorApp();
-		        var configSettings = new ConfigSettings();
+			try
+			{
+				var app = new CradiatorApp();
+				var configSettings = new ConfigSettings();
 				configSettings.Load();
 				var mainWindow = new CradiatorWindow(configSettings);
-		    	var bootstrapper = new Bootstrapper(configSettings, mainWindow);
-		    	var kernel = bootstrapper.CreateKernel();
-		    	var presenter = kernel.Get<CradiatorPresenter>();
+				var bootstrapper = new Bootstrapper(configSettings, mainWindow);
+				var kernel = bootstrapper.CreateKernel();
+				var presenter = kernel.Get<CradiatorPresenter>();
 
-		        mainWindow.Show();
+				mainWindow.Show();
 				presenter.Init();
 
-		        app.Run();
-		    }
-		    catch (Exception exception)
-		    {
-		        _log.Error(exception.Message, exception);
+				app.Run();
+			}
+			catch (Exception exception)
+			{
+				_log.Error(exception.Message, exception);
 
-		        var messageWindow = new MessageWindow(null);
+				var messageWindow = new MessageWindow(null);
 				messageWindow.ShowMessage(5, "Application Exception - see log for details\nShutting down...");
-		    }
+			}
 		}
 	}
 }

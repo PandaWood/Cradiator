@@ -5,13 +5,13 @@ namespace Cradiator.Model
 	public class FirstGuiltStrategy : BuildBusterStrategy
 	{
 		public FirstGuiltStrategy()
-            : base(new Regex(@"(\w+)(,|$)")) { }
+			: base(new Regex(@"(\w+)(,|$)")) { }
 	}
-    
+	
 	public class LastGuiltStrategy : BuildBusterStrategy
 	{
 		public LastGuiltStrategy()
-            : base(new Regex(@"[: ].*,* (.*)")) { }
+			: base(new Regex(@"[: ].*,* (.*)")) { }
 	}
 
 	public class FixerStrategy : BuildBusterStrategy
@@ -36,8 +36,8 @@ namespace Cradiator.Model
 
 		public string Extract(string text)
 		{
-		    var match = _regex.Match(text);
-		    return match.Groups[1].ToString().Trim(new[]{',',':',' '});
+			var match = _regex.Match(text);
+			return match.Groups[1].ToString().Trim(new[]{',',':',' '});
 		}
 	}
 }

@@ -19,7 +19,7 @@ namespace Cradiator.Commands
 			_showSettingsCommand = showSettingsCommand;
 		}
 		// ReSharper restore SuggestBaseTypeForParameter
-        
+		
 		public ICommand FullscreenCommand
 		{
 			get { return _fullscreenCommand; }

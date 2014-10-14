@@ -25,9 +25,11 @@ namespace Cradiator.Audio
 
 		public void PlaySounds(IEnumerable<ProjectStatus> currentBuildData)
 		{
+			var currentBuildDataList = currentBuildData as IList<ProjectStatus> ?? currentBuildData.ToList();
+
 			var newlyBrokenBuilds = 
-				currentBuildData.Where(proj => proj.IsBroken)
-								.Intersect(_previousBuildData.Where(proj => !proj.IsBroken));
+				currentBuildDataList.Where(proj => proj.IsBroken)
+									.Intersect(_previousBuildData.Where(proj => !proj.IsBroken)).ToList();
 
 			if (newlyBrokenBuilds.Any())
 			{
@@ -37,8 +39,8 @@ namespace Cradiator.Audio
 			else
 			{
 				var newlyFixedBuilds = 
-					currentBuildData.Where(proj => proj.IsSuccessful)
-									.Intersect(_previousBuildData.Where(proj => !proj.IsSuccessful));
+					currentBuildDataList.Where(proj => proj.IsSuccessful)
+										.Intersect(_previousBuildData.Where(proj => !proj.IsSuccessful)).ToList();
 
 				if (newlyFixedBuilds.Any())
 				{
@@ -47,7 +49,7 @@ namespace Cradiator.Audio
 				}
 			}
 
-			_previousBuildData = currentBuildData;
+			_previousBuildData = currentBuildDataList;
 		}
 
 		public void ConfigUpdated(ConfigSettings newSettings)

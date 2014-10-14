@@ -25,8 +25,8 @@ namespace Cradiator.Model
 			get
 			{
 				return from url in Url.Split(' ')
-				       let u = new UrlParser(url)
-				       where u.IsValid
+					   let u = new UrlParser(url)
+					   where u.IsValid
 					   select u.Url;
 			}
 		}

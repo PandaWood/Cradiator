@@ -18,7 +18,7 @@ namespace Cradiator.App
 
 		public IKernel CreateKernel()
 		{
-		    var cruiseNinjaModule = new CradiatorNinjaModule(_view, _configSettings);
+			var cruiseNinjaModule = new CradiatorNinjaModule(_view, _configSettings);
 			return Ninjector.Kernel = new StandardKernel(cruiseNinjaModule);
 		}
 	}

@@ -11,17 +11,17 @@ namespace Cradiator.Model
 		public const string FAILURE = "failure";
 		public const string EXCEPTION = "exception";
 		public const string ERROR = "error";
-        public const string UNKNOWN = "unknown";
+		public const string UNKNOWN = "unknown";
 
 		public string Name { get;  private set; } 
 		public string CurrentMessage { get; set; }
 		public ProjectActivity ProjectActivity { get; set; }
 		public string LastBuildStatus { get; set; }
-        public string ServerName { get; set; }
-        public DateTime LastBuildTime { get; set; }
+		public string ServerName { get; set; }
+		public DateTime LastBuildTime { get; set; }
 
-        [Obsolete("Constructor for XAML")]
-        public ProjectStatus() { Name = "designer name"; }
+		[Obsolete("Constructor for XAML")]
+		public ProjectStatus() { Name = "designer name"; }
 
 
 		public ProjectStatus(string name)
@@ -50,7 +50,7 @@ namespace Cradiator.Model
 			{ 
 				return LastBuildStatus.EqualsIgnoreCase(SUCCESS) || 
 					   LastBuildStatus.EqualsIgnoreCase(NORMAL) ||
-                       LastBuildStatus.EqualsIgnoreCase(UNKNOWN) ; // CCNET unknown is when is project has not build yet.
+					   LastBuildStatus.EqualsIgnoreCase(UNKNOWN) ; // CCNET unknown is when is project has not build yet.
 			}
 		}
 

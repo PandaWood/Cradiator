@@ -25,12 +25,12 @@ namespace Cradiator.Model
 			{
 				newSkin.Resource = _skinResourceLoader.LoadOrGet(newSkin);
 
-			    var appResources = Application.Current.Resources.MergedDictionaries;
+				var appResources = Application.Current.Resources.MergedDictionaries;
 
-			    if (appResources.Contains(newSkin.Resource))
+				if (appResources.Contains(newSkin.Resource))
 					appResources.Remove(newSkin.Resource);
 
-			    appResources.Add(newSkin.Resource);
+				appResources.Add(newSkin.Resource);
 			});
 		}
 	}

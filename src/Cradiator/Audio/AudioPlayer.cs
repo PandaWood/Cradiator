@@ -25,7 +25,7 @@ namespace Cradiator.Audio
 
 		bool _playSounds;
 		bool _playSpeech;
-	    string _speechVoiceName;
+		string _speechVoiceName;
 
 		[Inject]
 		public AudioPlayer(ISpeechSynthesizer speechSynth, IConfigSettings configSettings, 
@@ -35,7 +35,7 @@ namespace Cradiator.Audio
 			_speechVoiceName = configSettings.SpeechVoiceName;
 			_playSounds = configSettings.PlaySounds;
 			_playSpeech = configSettings.PlaySpeech;
-            _wavFileFolder = Path.Combine(appLocation.DirectoryName, "sounds");
+			_wavFileFolder = Path.Combine(appLocation.DirectoryName, "sounds");
 
 			_speechSynth = speechSynth;
 			_speechSynth.Rate = -2;		//TODO might be useful as configuration
@@ -58,7 +58,7 @@ namespace Cradiator.Audio
 
 			try
 			{
-                _voiceSelector.SelectInstalledVoice(_speechVoiceName);
+				_voiceSelector.SelectInstalledVoice(_speechVoiceName);
 				_speechSynth.SpeakAsync(promptBuilder);
 			}
 			catch (Exception exception)
@@ -89,7 +89,7 @@ namespace Cradiator.Audio
 		{
 			_playSounds = newSettings.PlaySounds;
 			_playSpeech = newSettings.PlaySpeech;
-		    _speechVoiceName = newSettings.SpeechVoiceName;
+			_speechVoiceName = newSettings.SpeechVoiceName;
 		}
 	}
 }

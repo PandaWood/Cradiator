@@ -32,7 +32,7 @@ namespace Cradiator.Model
 			if (currentMessage.IsEmpty())
 				return string.Empty;
 
-            var username = currentMessage;
+			var username = currentMessage;
 
 			if (_fixerStrategy.IsMatch(currentMessage))
 				username = _fixerStrategy.Extract(currentMessage);

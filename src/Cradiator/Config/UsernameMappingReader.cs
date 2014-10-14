@@ -22,11 +22,11 @@ namespace Cradiator.Config
 
 			return (from username in xDoc.Elements("configuration")
 						.Elements("usernames")
-			        	.Elements("add")
-			        select new 
-			        {
+						.Elements("add")
+					select new 
+					{
 						UserName = username.FirstAttribute.Value,
-			            FullName= username.LastAttribute.Value
+						FullName= username.LastAttribute.Value
 					}).ToDictionary(x => x.UserName, x => x.FullName);
 		}
 	}

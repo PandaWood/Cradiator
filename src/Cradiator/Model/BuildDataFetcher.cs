@@ -26,14 +26,14 @@ namespace Cradiator.Model
 		{
 			return _viewUrl.UriList.Select(url =>
 			{
-			    try
-			    {
-			    	return _webClient.DownloadString(url);
-			    }
-			    catch (WebException webException)
-			    {
+				try
+				{
+					return _webClient.DownloadString(url);
+				}
+				catch (WebException webException)
+				{
 					throw new FetchException(url, webException);
-			    }
+				}
 			}).ToList();
 		}
 

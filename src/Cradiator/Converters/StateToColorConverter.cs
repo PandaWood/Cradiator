@@ -17,7 +17,7 @@ namespace Cradiator.Converters
 			switch (value.ToString().ToLower())
 			{
 				case ProjectStatus.SUCCESS:
-                case ProjectStatus.NORMAL:
+				case ProjectStatus.NORMAL:
 					return Colors.LimeGreen;
 
 				case ProjectStatus.BUILDING:
@@ -25,7 +25,7 @@ namespace Cradiator.Converters
 
 				case ProjectStatus.FAILURE:
 				case ProjectStatus.EXCEPTION:
-                case ProjectStatus.ERROR:
+				case ProjectStatus.ERROR:
 					return Colors.Red;
 
 				default:
