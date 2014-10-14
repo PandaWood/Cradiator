@@ -22,6 +22,11 @@ namespace Cradiator.Config
 		ICollection<ViewSettings> _viewList = new List<ViewSettings>();
 		readonly Queue<ViewSettings> _viewQueue = new Queue<ViewSettings>();
 
+		public ConfigSettings()
+		{
+			ServerNameRegEx = CategoryRegEx = ProjectNameRegEx = ".*";
+		}
+
 		public void Load()
 		{
 			LoadViewSettings();
@@ -55,12 +60,12 @@ namespace Cradiator.Config
 						ProjectNameRegEx = ProjectNameRegEx,
 						CategoryRegEx = CategoryRegEx,
 						ServerNameRegEx = ServerNameRegEx,
-                        SkinName = SkinName,
-                        ViewName = ViewName,
-                        ShowOnlyBroken = ShowOnlyBroken,
-                        ShowServerName = ShowServerName,
-                        ShowOutOfDate = ShowOutOfDate,
-                        OutOfDateDifferenceInMinutes = OutOfDateDifferenceInMinutes
+						SkinName = SkinName,
+						ViewName = ViewName,
+						ShowOnlyBroken = ShowOnlyBroken,
+						ShowServerName = ShowServerName,
+						ShowOutOfDate = ShowOutOfDate,
+						OutOfDateDifferenceInMinutes = OutOfDateDifferenceInMinutes
 					});
 				}
 
@@ -109,18 +114,17 @@ namespace Cradiator.Config
 			SkinName = q.SkinName;
 			ProjectNameRegEx = q.ProjectNameRegEx;
 			CategoryRegEx = q.CategoryRegEx;
-            ServerNameRegEx = q.ServerNameRegEx;
-            ViewName = q.ViewName;
-            ShowOnlyBroken = q.ShowOnlyBroken;
-            ShowServerName = q.ShowServerName;
-            ShowOutOfDate = q.ShowOutOfDate;
-            OutOfDateDifferenceInMinutes = q.OutOfDateDifferenceInMinutes;
-
+			ServerNameRegEx = q.ServerNameRegEx;
+			ViewName = q.ViewName;
+			ShowOnlyBroken = q.ShowOnlyBroken;
+			ShowServerName = q.ShowServerName;
+			ShowOutOfDate = q.ShowOutOfDate;
+			OutOfDateDifferenceInMinutes = q.OutOfDateDifferenceInMinutes;
 		}
 
 		private void LoadViewSettings()
 		{
-		    _viewList = ViewSettingsParser.Read(_configLocation.FileName);
+			_viewList = ViewSettingsParser.Read(_configLocation.FileName);
 			_viewQueue.Clear();
 		}
 

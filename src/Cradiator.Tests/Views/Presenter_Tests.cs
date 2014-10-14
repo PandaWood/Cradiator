@@ -1,3 +1,4 @@
+using System;
 using Cradiator.App;
 using Cradiator.Config;
 using Cradiator.Model;
@@ -40,15 +41,16 @@ namespace Cradiator.Tests.Views
 
 		//TODO this test takes ages... can this be avoided?
 		[Test]
+		[STAThread]
 		public void CanCreatePresenter()
 		{
 			var presenter = _kernel.Get<CradiatorPresenter>();
 			presenter.Init();
 
 			_configSettings.ShouldHaveBeenCalled(c => c.AddObserver(presenter));
-            _skinLoader.ShouldHaveBeenCalled(s => s.Load(Arg<Skin>.Is.Anything));
-            _screenUpdater.ShouldHaveBeenCalled(s => s.Update());
-            _configFileWatcher.ShouldHaveBeenCalled(c => c.Start());
+			_skinLoader.ShouldHaveBeenCalled(s => s.Load(Arg<Skin>.Is.Anything));
+			_screenUpdater.ShouldHaveBeenCalled(s => s.Update());
+			_configFileWatcher.ShouldHaveBeenCalled(c => c.Start());
 		}
 	}
 }

@@ -27,6 +27,7 @@ namespace Cradiator.Tests.Model
 			_configSettings = MockRepository.GenerateMock<IConfigSettings>();
 			_configSettings.Expect(c => c.ProjectNameRegEx).Return(".*").Repeat.Any();
 			_configSettings.Expect(c => c.CategoryRegEx).Return(".*").Repeat.Any();
+			_configSettings.Expect(c => c.ServerNameRegEx).Return(".*").Repeat.Any();
 
 			_kernel = new StandardKernel(new CradiatorNinjaModule(_view, _configSettings));
 			_factory = _kernel.Get<IWebClientFactory>();
@@ -38,10 +39,10 @@ namespace Cradiator.Tests.Model
 		{
 			Assert.Throws<FetchException>(() =>
 			{
-			    var fetcher = new BuildDataFetcher(
-			        new ViewUrl("http://a.b.c.d.e.foo/ccnet/XmlStatusReport.aspx"), 
-                        _configSettings, _factory);
-                fetcher.Fetch();
+				var fetcher = new BuildDataFetcher(
+					new ViewUrl("http://a.b.c.d.e.foo/ccnet/XmlStatusReport.aspx"), 
+						_configSettings, _factory);
+				fetcher.Fetch();
 			}, "Unable to contact http://a.b.c.d.e.foo/ccnet/XmlStatusReport.aspx");
 		}
 
@@ -53,10 +54,10 @@ namespace Cradiator.Tests.Model
 		{
 			var fetcher = 
 				new BuildDataFetcher(new ViewUrl("http://ccnetlive.thoughtworks.com/ccnet/XmlStatusReport.aspx"),
-				                     _configSettings, _factory);
+									 _configSettings, _factory);
 
-		    var fetch = fetcher.Fetch();
-		    fetch.Count().ShouldBeGreaterThan(0);
+			var fetch = fetcher.Fetch().ToList();
+			fetch.Count().ShouldBeGreaterThan(0);
 			fetch.ShouldContain(@"Project name=""CCNet""");
 		}
 	}
