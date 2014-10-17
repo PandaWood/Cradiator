@@ -8,3 +8,5 @@ obj
 *.exe
 *.pdb
 patches
+/Cradiator.sln.DotSettings
+/desktop.ini

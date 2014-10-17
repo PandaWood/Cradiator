@@ -70,21 +70,19 @@ namespace Cradiator.Model
 
 		void FetchData(object sender, DoWorkEventArgs e)
 		{
-			try
-			{
-				var xmlResults = _fetcher.Fetch();
-				e.Result = xmlResults;
-			}
-			catch (Exception exception)
-			{
-				_fetchExceptionHandler.Handle(exception);
-			}
+			e.Result = _fetcher.Fetch();
 		}
 
 		void DataFetched(object sender, RunWorkerCompletedEventArgs e)
 		{
 			try
 			{
+				if (e.Error != null)
+				{
+					_fetchExceptionHandler.Handle(e.Error);
+					return;
+				}
+
 				var xmlResults = e.Result as IEnumerable<string>;
 				IEnumerable<ProjectStatus> projectData = new List<ProjectStatus>();
 				if (xmlResults != null)

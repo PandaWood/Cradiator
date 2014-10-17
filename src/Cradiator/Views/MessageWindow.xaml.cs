@@ -93,6 +93,8 @@ namespace Cradiator.Views
 			{
 				_fadeStoryBoard.Completed -= FadeAway_Completed;
 			}
+
+			base.OnClosing(e);
 		}
 	}
 }
