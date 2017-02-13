@@ -3,7 +3,6 @@
 ###############################################################################
 
 The home for Cradiator is http://codeplex.com/Cradiator
-The source home for Cradiator is http://github.com/PandaWood/Cradiator
 
 Cradiator uses the REST-style service exposed by cruise control. 
 To test that your installation of CruiseControl supports this, try and browse to 
@@ -21,12 +20,6 @@ NUnit - http://www.nunit.org
 Rhino Mocks - http://www.ayende.com/projects/rhino-mocks.aspx
 Ninject - http://ninject.org
 
-###############################################################################
-## Plugins
-###############################################################################
-A TeamCity plugin which outputs the XML format required by Cradiator is included 
-with this release (ie Makes TeamCity compatible with Cradiator)
-The plugin (by JSummerton) is open source at http://github.com/demyte/Cradiator-TeamCity-Plugin
 
 ###############################################################################
 ## Contact Information
@@ -42,4 +35,4 @@ email:		bencarey@gmail.com
 twitter:	http://twitter.com/bencarey
 
 Cradiator was created by Peter van der Woude
-email:      	spurrymoses@gmail.com
+email: pandawoude@gmail.com

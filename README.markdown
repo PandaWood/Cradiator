@@ -1,10 +1,5 @@
-*UPDATE* I'm going to remove this github repository vers soon and keep Cradiator on codeplex (I think WPF projects belong there)
-
-Cradiator's issue management is still at <http://cradiator.codeplex.com/> (wiki, discussion)  
-
-
-Note that TeamCity, as of v7.0, now supports CCTray compatible XML - http://confluence.jetbrains.com/display/TW/REST+API+Plugin#RESTAPIPlugin-CCTray
-So the special plugin we wrote (at https://github.com/demyte/Cradiator-TeamCity-Plugin) is no longer required
+Cradiator source has returned to CodePlex in 2017!
+I could be mislead, but it seems CodePlex is a better place for a WPF project to live.
 
 ## Contributors
 
