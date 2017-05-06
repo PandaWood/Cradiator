@@ -1,10 +1,5 @@
-Cradiator went back to CodePlex but it's closing down, so now we're back to GitHub - this time for sure!
-
-## Contributors
-
-* [PandaWood](https://github.com/PandaWood/Cradiator)
-* [RubenWillems](http://www.codeplex.com/site/users/view/RubenWillems)
-* [Craig Sutherland](http://www.codeplex.com/site/users/view/csut017)
+We're back to GitHub - this time for sure!
+But this does mean I've lost any stars or follows from the original repo
 
 ### Config documentation (serving as a rough functionality guide)
 
