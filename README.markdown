@@ -1,7 +1,56 @@
-We're back to GitHub - this time for sure!
-But this does mean I've lost any stars or follows from the original repo
+*We're back to GitHub - this time for sure!*
+*But this does mean I've lost any stars or follows from the original repo*
 
-### Config documentation (serving as a rough functionality guide)
+Cradiator is a Windows (WPF) app that displays a summary of Continuous Integration (CI) project statuses. It is basically an _Information Radiator_ for CI. Cradiator currently supports [Cruise Control](http://en.wikipedia.org/wiki/CruiseControl) (Java, .Net, Ruby) and [Team City](http://www.jetbrains.com/teamcity)
+
+Cradiator is most suited to display on a dedicated monitor where it is visible to developers working on a project.
+There are various screen layouts or **skins** to choose from:
+
+#### Stack Skin
+Also showing is a countdown of how many seconds to go before refreshing (shown here as "_00:03_") - this can be switched off.
+
+![](images/ss_CradiatorStackSkin.png)
+
+#### Grid Skin
+
+![](images/ss_CradiatorGridSkin.png)
+
+#### StackPhoto Skin
+Shows an image alongside a broken project (based on the breaker's username). Only 1 breaker is shown.
+
+![](images/ss_CradiatorStackPhotoSkin.png)
+
+#### Color Chart
+|| Color || Status ||
+| Green | Success/Normal |
+| Red | Failure/Exception/Error |
+| Yellow | Building |
+| White | Unknown |
+
+**Cradiator** is a continuation (or "fork") of Ben Carey's [BigVisibleCruise at GoogleCode](http://code.google.com/p/bigvisiblecruise).
+NB all the important features below were added to Cradiator and are not found in BigVisibleCruise. The conversion to Cradiator also included a  significant refactoring - extreme separation of concerns (_SRP_), reduction of assemblies, C#3 features etc
+#### Important Features
+* Shows breakers of a build (if broken) or the volunteer to fix the build (for CCNet requires 1.4.3 or greater)
+* New skin (StackPhoto)
+* Filter by Category (in addition to Project Name)
+* Show progress/status when making connection to Cruise server (configurable)
+* Color gradients for visual appeal
+* Wav files can be played on specific events (currently 'NewlyBrokenBuild' and 'NewlyFixedBuild')
+* Speech synthesis - Cradiator says which build is broken (handy for those with sore necks who can't check the big screen) - uses SAPI support on Windows. The text to say and the voice itself is configurable - so you can [Download your own voices](http://www.cepstral.com/downloads)
+* Show a Countdown of how many seconds to go before refreshing status
+* Added a Debug-mode facility to allow developers to replace the Cruise Web Service XML with their own XML - handy for UI testing/experimentation and screenshot/demos
+* Configuration changes:
+* An app restart is not required for settings to take effect
+* Config file can even be edited while the app is running (ie is 'watched' for changes and applied immediately or at the next refresh interval)
+* Settings dialog (for people with text-editor phobias)
+* Logging (using log4net) - can be configured via app.config
+* MultiUrl - Combine multiple projects or servers into one screen (view) by specifying multiple URLs (space-delimited)
+* MultiView - Is your monitor not big enough to display all your projects? Split your projects between separate "views". A view is the combination of URL, Skin and project filters. When more than 1 view is set, each one is shown on a rotation cycle every poll interval (default 30 seconds)
+	* For example, if you have 12 projects, you can set 2 views which show only 6 each
+
+Cradiator requires .Net3.5 installed (there is no check for this in the installer as I trust devs can manage this)
+
+### Config documentation
 
 1. __Polling Frequency__ - In seconds. Default is 30
 
