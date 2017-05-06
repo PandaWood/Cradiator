@@ -1,4 +1,4 @@
-Cradiator source has returned to CodePlex in 2017!
+Cradiator went back to CodePlex but it's closing down, so now we're back to GitHub - this time for sure!
 I could be mislead, but it seems CodePlex is a better place for a WPF project to live.
 
 ## Contributors
