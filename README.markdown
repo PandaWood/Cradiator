@@ -21,7 +21,8 @@ Shows an image alongside a broken project (based on the breaker's username). Onl
 ![](images/ss_CradiatorStackPhotoSkin.png)
 
 #### Color Chart
-|| Color || Status ||
+| Color | Status |
+|-------|--------|
 | Green | Success/Normal |
 | Red | Failure/Exception/Error |
 | Yellow | Building |
