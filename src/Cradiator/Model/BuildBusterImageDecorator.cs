@@ -9,7 +9,7 @@ namespace Cradiator.Model
 {
 	public class BuildBusterImageDecorator : IBuildBuster
 	{
-		static readonly ILog _log = LogManager.GetLogger(typeof(BuildBusterImageDecorator).Name);
+		static readonly ILog _log = LogManager.GetLogger(nameof(BuildBusterImageDecorator));
 
 		readonly IBuildBuster _buildBuster;
 		readonly string _imageFolder;
@@ -33,7 +33,7 @@ namespace Cradiator.Model
 				}
 			}
 
-			var imagePath = string.Format(@"{0}\{1}.jpg", _imageFolder, username).Trim();
+			var imagePath = $@"{_imageFolder}\{username}.jpg".Trim();
 
 			_log.DebugFormat("Breaker image='{0}'", imagePath);
 

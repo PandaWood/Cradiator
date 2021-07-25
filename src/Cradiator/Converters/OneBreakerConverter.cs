@@ -30,7 +30,7 @@ namespace Cradiator.Converters
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			var breaker = _buildBuster.FindBreaker(value as string);
-			return breaker.IsEmpty() ? string.Empty : string.Format("({0})", breaker);
+			return breaker.IsEmpty() ? string.Empty : $"({breaker})";
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

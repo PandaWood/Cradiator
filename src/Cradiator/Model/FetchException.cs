@@ -13,14 +13,11 @@ namespace Cradiator.Model
 		}
 
 		public FetchException(string url)
-			: base(string.Format("Invalid URL '{0}'", url))
+			: base($"Invalid URL '{url}'")
 		{
 			_url = url;
 		}
 
-		public string Url
-		{
-			get { return _url; }
-		}
+		public string Url => _url;
 	}
 }

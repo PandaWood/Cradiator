@@ -2,9 +2,8 @@ using System;
 using Cradiator.Config;
 using Cradiator.Config.ChangeHandlers;
 using Cradiator.Model;
+using FakeItEasy;
 using NUnit.Framework;
-using Rhino.Mocks;
-using Shouldly;
 
 namespace Cradiator.Tests.Config
 {
@@ -18,37 +17,35 @@ namespace Cradiator.Tests.Config
 		[SetUp]
 		public void SetUp()
 		{
-			_pollTimer = Create.Mock<IPollTimer>();
-            _countdownChangeHandler = Create.Mock<ICountdownTimer>();
+			_pollTimer = A.Fake<IPollTimer>();
+			_countdownChangeHandler = A.Fake<ICountdownTimer>();
 			_pollingChangeHandler = new PollIntervalChangeHandler(_pollTimer, _countdownChangeHandler);
 		}
 
 		[Test]
 		public void DoesNotUpdate_If_IntervalAlreadyEqual()
 		{
-			_pollTimer.Expect(p => p.Interval).Return(TimeSpan.FromSeconds(5));
+			A.CallTo(() => _pollTimer.Interval).Returns(TimeSpan.FromSeconds(5));
 
-			_pollingChangeHandler.ConfigUpdated(new ConfigSettings { PollFrequency = 5 });
+			_pollingChangeHandler.ConfigUpdated(new ConfigSettings {PollFrequency = 5});
 
-			_pollTimer.AssertWasNotCalled(p=>p.Stop());
-			_countdownChangeHandler.AssertWasNotCalled(c => c.Reset());
-			_pollTimer.AssertWasNotCalled(p=>p.Start());
+			A.CallTo(() => _pollTimer.Stop()).MustNotHaveHappened();
+			A.CallTo(() => _countdownChangeHandler.Reset()).MustNotHaveHappened();
+			A.CallTo(() => _pollTimer.Start()).MustNotHaveHappened();
 		}
 
 		[Test]
 		public void CanUpdate_If_IntervalNotEqual()
 		{
-			_pollTimer.Expect(p => p.Interval).Return(TimeSpan.FromSeconds(1));
+			A.CallTo(() => _pollTimer.Interval).Returns(TimeSpan.FromSeconds(1));
 			_pollTimer.Interval = TimeSpan.FromSeconds(2);
 			_countdownChangeHandler.PollFrequency = TimeSpan.FromSeconds(2);
 
-			_pollingChangeHandler.ConfigUpdated(new ConfigSettings { PollFrequency = 2 });
+			_pollingChangeHandler.ConfigUpdated(new ConfigSettings {PollFrequency = 2});
 
-			_pollTimer.ShouldHaveBeenCalled(p => p.Stop());
-            _countdownChangeHandler.ShouldHaveBeenCalled(c => c.Reset());
-            _pollTimer.ShouldHaveBeenCalled(p => p.Start());
-
-			_pollTimer.VerifyAllExpectations();
+			A.CallTo(() => _pollTimer.Stop()).MustHaveHappened();
+			A.CallTo(() => _countdownChangeHandler.Reset()).MustHaveHappened();
+			A.CallTo(() => _pollTimer.Start()).MustHaveHappened();
 		}
 	}
 }

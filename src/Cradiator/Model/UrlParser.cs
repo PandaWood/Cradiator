@@ -7,7 +7,7 @@ namespace Cradiator.Model
 {
 	public class UrlParser
 	{
-		static readonly ILog _log = LogManager.GetLogger(typeof(UrlParser).Name);
+		static readonly ILog _log = LogManager.GetLogger(nameof(UrlParser));
 		private readonly string _url;
 
 		public UrlParser(string url)
@@ -15,7 +15,7 @@ namespace Cradiator.Model
 			_url = url;
 		}
 
-		public string Url { get { return _url; } }
+		public string Url => _url;
 
 		public bool IsValid
 		{
@@ -29,14 +29,8 @@ namespace Cradiator.Model
 			}
 		}
 
-		public bool IsNotValid
-		{
-			get { return !IsValid; }
-		}
+		public bool IsNotValid => !IsValid;
 
-		public bool IsDebug
-		{
-			get { return _url.HasValue() && _url.ToLower().StartsWith("debug"); }
-		}
+		public bool IsDebug => _url.HasValue() && _url.ToLower().StartsWith("debug");
 	}
 }

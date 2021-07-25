@@ -6,7 +6,7 @@ namespace Cradiator.Model
 {
 	public class FetchExceptionHandler
 	{
-		static readonly ILog _log = LogManager.GetLogger(typeof(FetchExceptionHandler).Name);
+		static readonly ILog _log = LogManager.GetLogger(nameof(FetchExceptionHandler));
 
 		readonly ICradiatorView _view;
 

@@ -2,8 +2,8 @@ using System;
 using Cradiator.Config;
 using Cradiator.Model;
 using Cradiator.Views;
+using FakeItEasy;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace Cradiator.Tests.Model
 {
@@ -19,8 +19,8 @@ namespace Cradiator.Tests.Model
 		[SetUp]
 		public void SetUp()
 		{
-			_view = MockRepository.GenerateMock<ICradiatorView>();
-			_date = MockRepository.GenerateStub<IDateTimeNow>();
+			_view = A.Fake<ICradiatorView>();
+			_date = A.Fake<IDateTimeNow>();
 
 			_pollFrequency = TenSeconds;
 

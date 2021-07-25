@@ -13,7 +13,7 @@ namespace Cradiator.Tests.Audio
 		{
 			var bigSynth = new CradiatorSpeechSynthesizer(new SpeechSynthesizer()) { Rate = -2 };
 			Assert.That(bigSynth.GetInstalledVoices().Count(), Is.GreaterThanOrEqualTo(1));
-			Assert.That(bigSynth.GetInstalledVoices().Where(v => v.Name.StartsWith("Microsoft")).Count(), Is.GreaterThanOrEqualTo(1));
+			Assert.That(bigSynth.GetInstalledVoices().Count(v => v.Name.StartsWith("Microsoft")), Is.GreaterThanOrEqualTo(1));
 		}
 	}
 }

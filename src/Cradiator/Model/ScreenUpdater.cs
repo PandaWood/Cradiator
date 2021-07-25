@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using Cradiator.Audio;
 using Cradiator.Config;
+using Cradiator.ViewModels;
 using Cradiator.Views;
 using log4net;
 
@@ -16,7 +17,7 @@ namespace Cradiator.Model
 
 	public class ScreenUpdater : IScreenUpdater
 	{
-		static readonly ILog _log = LogManager.GetLogger(typeof(ScreenUpdater).Name);
+		static readonly ILog _log = LogManager.GetLogger(nameof(ScreenUpdater));
 
 		readonly ICradiatorView _view;
 		readonly DiscJockey _discJockey;
@@ -101,7 +102,7 @@ namespace Cradiator.Model
 					});
 				}
 
-				_view.DataContext = new ViewModels.ViewDataViewModel(_viewSettings, projectData);
+				_view.DataContext = new ViewDataViewModel(_viewSettings, projectData);
 				
 				_discJockey.PlaySounds(projectData);
 			}

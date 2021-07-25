@@ -26,11 +26,9 @@ namespace Cradiator.Converters
 				var seconds = Math.Floor(secondsValue%60);
 
 				if (minutes > 1 && seconds == 0)
-					timeString = string.Format("{0} minutes", minutes);
+					timeString = $"{minutes} minutes";
 				else
-					timeString = string.Format("{0} minute{1} and {2} second{3}", 
-											minutes, minutes > 1 ? "s" : "", 
-											seconds, seconds > 1 ? "s" : "");
+					timeString = $"{minutes} minute{(minutes > 1 ? "s" : "")} and {seconds} second{(seconds > 1 ? "s" : "")}";
 			}
 
 			return "Every " + timeString;

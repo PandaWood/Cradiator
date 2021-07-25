@@ -2,8 +2,8 @@ using System;
 using System.Windows.Data;
 using Cradiator.Converters;
 using Cradiator.Model;
+using FakeItEasy;
 using NUnit.Framework;
-using Rhino.Mocks;
 using Shouldly;
 
 namespace Cradiator.Tests.Converters
@@ -15,7 +15,7 @@ namespace Cradiator.Tests.Converters
 
 		protected override IValueConverter CreateConverter()
 		{
-			_buildBuster = MockRepository.GenerateMock<IBuildBuster>();
+			_buildBuster = A.Fake<IBuildBuster>();
 			return new OneBreakerConverter(_buildBuster);
 		}
 
@@ -25,21 +25,21 @@ namespace Cradiator.Tests.Converters
 			// NB we only test what is the responsibility of the OneBreakerConverter 
 			// which is just formatting the results of IBuildBuster (which is already tested, DRY)
 
-			_buildBuster.Stub(b => b.FindBreaker(Arg<string>.Is.Anything)).Return("bob");
+			A.CallTo(() => _buildBuster.FindBreaker(A<string>._)).Returns("bob");
 			DoConvert("irrelevant").ShouldBe("(bob)");
 		}
 
 		[Test]
 		public void CanConvert_If_CurrentMessage_IsEmptyString()
 		{
-			_buildBuster.Stub(b => b.FindBreaker(Arg<string>.Is.Anything)).Return("");
+			A.CallTo(() => _buildBuster.FindBreaker(A<string>._)).Returns("");
 			DoConvert("irrelevant").ShouldBe("");
 		}
 
 		[Test]
 		public void CanConvert_If_CurrentMessage_IsNull()
 		{
-			_buildBuster.Stub(b => b.FindBreaker(Arg<string>.Is.Anything)).Return(null);
+			A.CallTo(() => _buildBuster.FindBreaker(A<string>._)).Returns(null);
 			DoConvert("irrelevant").ShouldBe("");
 		}
 

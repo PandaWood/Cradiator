@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using Cradiator.Audio;
 using Cradiator.Config;
 using Cradiator.Model;
+using FakeItEasy;
 using NUnit.Framework;
-using Rhino.Mocks;
 using Shouldly;
 
 namespace Cradiator.Tests.Audio
@@ -21,28 +21,27 @@ namespace Cradiator.Tests.Audio
 		[SetUp]
 		public void SetUp()
 		{
-			Create.Stub<IBuildBuster>();
-			_speechTextParser = MockRepository.GenerateMock<ISpeechTextParser>();
+			_speechTextParser = A.Fake<ISpeechTextParser>();
 
 			_projectStatusList = new List<ProjectStatus>
-			                     {
-			                     	new ProjectStatus("Project2")
-			                     	{
-			                     		LastBuildStatus = ProjectStatus.SUCCESS
-			                     	}
-			                     };
+			{
+				new ProjectStatus("Project2")
+				{
+					LastBuildStatus = ProjectStatus.SUCCESS
+				}
+			};
 
 			_speaker = new SpeechMaker(new ConfigSettings
-			                           {
-											FixedBuildText = ProjectFixedText,
-			                           		BrokenBuildText = ProjectBrokenText
-			                           }, _speechTextParser);
+			{
+				FixedBuildText = ProjectFixedText,
+				BrokenBuildText = ProjectBrokenText
+			}, _speechTextParser);
 		}
 
 		[Test]
 		public void CanMakeSpeech_ForBuildIsFixed()
 		{
-			_speechTextParser.Expect(s => s.Parse(null, null)).IgnoreArguments().Return(ProjectFixedText);
+			A.CallTo(() => _speechTextParser.Parse(A<string>.Ignored, A<ProjectStatus>.Ignored)).Returns(ProjectFixedText);
 
 			var speech = _speaker.BuildIsFixed(_projectStatusList);
 			speech.ToXml().ShouldContain(ProjectFixedText);
@@ -51,7 +50,7 @@ namespace Cradiator.Tests.Audio
 		[Test]
 		public void CanMakeSpeech_ForBuildIsBroken()
 		{
-			_speechTextParser.Expect(s => s.Parse(null, null)).IgnoreArguments().Return(ProjectBrokenText);
+			A.CallTo(() => _speechTextParser.Parse(A<string>.Ignored, A<ProjectStatus>.Ignored)).Returns(ProjectBrokenText);
 
 			var speech = _speaker.BuildIsBroken(_projectStatusList);
             speech.ToXml().ShouldContain(ProjectBrokenText);
@@ -60,18 +59,14 @@ namespace Cradiator.Tests.Audio
 		[Test]
 		public void CanUpdateSettings()
 		{
-			_speechTextParser.Expect(s => s.Parse(Arg.Is(ProjectFixedText), Arg<ProjectStatus>.Is.Anything))
-				.Return("dont care");
+			A.CallTo(() => _speechTextParser.Parse(ProjectFixedText, A<ProjectStatus>.Ignored)).Returns("dont care");
 
 			_speaker.BuildIsFixed(_projectStatusList);
 
-			_speechTextParser.Expect(s => s.Parse(Arg.Is("is different"), Arg<ProjectStatus>.Is.Anything))
-				.Return("dont care");
+			A.CallTo(() => _speechTextParser.Parse("is different", A<ProjectStatus>.Ignored)).Returns("dont care");
 
 			_speaker.ConfigUpdated(new ConfigSettings { FixedBuildText = "is different" });
 			_speaker.BuildIsFixed(_projectStatusList);
-
-			_speechTextParser.VerifyAllExpectations();
 		}
 	}
 }

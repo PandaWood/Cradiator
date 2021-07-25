@@ -10,7 +10,7 @@ namespace Cradiator.Services
 
 	public class WebClientFactory : IWebClientFactory
 	{
-		static readonly ILog _log = LogManager.GetLogger(typeof(WebClientFactory).Name);
+		static readonly ILog _log = LogManager.GetLogger(nameof(WebClientFactory));
 
 		public IWebClient GetWebClient(string url)
 		{

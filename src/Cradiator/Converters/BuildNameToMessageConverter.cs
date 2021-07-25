@@ -16,7 +16,7 @@ namespace Cradiator.Converters
 			var message = values[1].ToString();
 			
 			return message.Trim().Length == 0 ? 
-				projectName : string.Format("{0}\n{1}", projectName, message);
+				projectName : $"{projectName}\n{message}";
 		}
 
 		public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

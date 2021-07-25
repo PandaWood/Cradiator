@@ -20,6 +20,8 @@ namespace Cradiator.Model
 
 				case GuiltStrategyType.Last:
 					return new LastGuiltStrategy();
+				default:
+					throw new ArgumentOutOfRangeException(nameof(guiltType), guiltType, null);
 			}
 
 			throw new UnknownStrategyTypeException();

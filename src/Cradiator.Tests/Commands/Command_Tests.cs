@@ -1,8 +1,8 @@
 using System.Windows;
 using Cradiator.Commands;
 using Cradiator.Views;
+using FakeItEasy;
 using NUnit.Framework;
-using Rhino.Mocks;
 using Shouldly;
 
 namespace Cradiator.Tests.Commands
@@ -15,7 +15,7 @@ namespace Cradiator.Tests.Commands
 		[SetUp]
 		public void SetUp()
 		{
-			_view = Create.Mock<ICradiatorView>();
+			_view = A.Fake<ICradiatorView>();
 		}
 
 		[Test]
@@ -29,12 +29,12 @@ namespace Cradiator.Tests.Commands
 				WindowState = WindowState.Normal
 			};
 
-			_view.Expect(v => v.Window).Return(window).Repeat.Any();
+			A.CallTo(() => _view.Window).Returns(window);
 
 			var command = new FullscreenCommand(_view);
 			command.Execute(null);
 
-		    command.CanExecute(null).ShouldBe(true);
+		  command.CanExecute(null).ShouldBe(true);
 			window.WindowStyle.ShouldBe(WindowStyle.None);
 			window.Topmost.ShouldBe(true);
 			window.WindowState.ShouldBe(WindowState.Maximized);
@@ -51,7 +51,7 @@ namespace Cradiator.Tests.Commands
 				WindowState = WindowState.Maximized
 			};
 
-			_view.Expect(v => v.Window).Return(window).Repeat.Any();
+			A.CallTo(() => _view.Window).Returns(window);
 
 			var command = new FullscreenCommand(_view);
 			command.Execute(null);
@@ -68,19 +68,19 @@ namespace Cradiator.Tests.Commands
 			command.Execute(null);
 
 			command.CanExecute(null).ShouldBe(true);
-			_view.ShouldHaveBeenCalled(v=>v.UpdateScreen());
+			A.CallTo(() => _view.UpdateScreen()).MustHaveHappened();
 		}
 
 		[Test]
 		public void CanShowSettingsCommand()
 		{
-			var settingsWindow = MockRepository.GenerateMock<ISettingsWindow>();
+			var settingsWindow = A.Fake<ISettingsWindow>();
 
 			var command = new ShowSettingsCommand(_view, settingsWindow);
 			command.Execute(null);
 
 			command.CanExecute(null).ShouldBe(true);
-            settingsWindow.ShouldHaveBeenCalled(s => s.ShowDialog());
+			A.CallTo(() => settingsWindow.ShowDialog()).MustHaveHappened();
 		}
 	}
 }

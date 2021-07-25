@@ -1,5 +1,6 @@
 using System.Linq;
 using Cradiator.Config;
+using FakeItEasy;
 using NUnit.Framework;
 using Shouldly;
 
@@ -14,7 +15,7 @@ namespace Cradiator.Tests.Config
 		[SetUp]
 		public void SetUp()
 		{
-			_configLocation = Create.Stub<IConfigLocation>();
+			_configLocation = A.Fake<IConfigLocation>();
 
 			_reader = new UserNameMappingReader(_configLocation)
 			{

@@ -37,10 +37,7 @@ namespace Cradiator.Model
 			}
 		}
 
-		public bool IsSwitchedOn
-		{
-			get { return _isSwitchedOn; }
-		}
+		public bool IsSwitchedOn => _isSwitchedOn;
 
 		public CountdownTimer(IConfigSettings configSettings, ICradiatorView view)
 		{
@@ -81,7 +78,7 @@ namespace Cradiator.Model
 
 		public DateTime CalculateNext()
 		{
-			return _nextRefresh = (_nextRefresh < _date.Now) ? Reset() : _nextRefresh;
+			return _nextRefresh = _nextRefresh < _date.Now ? Reset() : _nextRefresh;
 		}
 
 		public void Execute()

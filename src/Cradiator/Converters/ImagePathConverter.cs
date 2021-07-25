@@ -20,7 +20,7 @@ namespace Cradiator.Converters
 		public ImagePathConverter([InjectBuildBusterImageDecorator] IBuildBuster buildBuster)
 		{
 			_buildBuster = buildBuster;
-		}
+		} 
 
 		/// <summary>
 		/// convert from CurrentMessage to the FileName of an image to load (using breaker's name eg bsimpson.jpg)

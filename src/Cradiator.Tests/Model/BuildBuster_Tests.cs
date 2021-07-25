@@ -1,7 +1,7 @@
 using Cradiator.Config;
 using Cradiator.Model;
+using FakeItEasy;
 using NUnit.Framework;
-using Rhino.Mocks;
 using Shouldly;
 
 namespace Cradiator.Tests.Model
@@ -17,13 +17,13 @@ namespace Cradiator.Tests.Model
 		[SetUp]
 		public void SetUp()
 		{
-			_configSettings = Create.Stub<IConfigSettings>();
+			_configSettings = A.Fake<IConfigSettings>();
 			_guiltFactory = new GuiltFactory();
 		}
 
 		private void SetUpBreaker(GuiltStrategyType guiltStrategy)
 		{
-			_configSettings.Stub(s => s.BreakerGuiltStrategy).Return(guiltStrategy);
+			A.CallTo(() => _configSettings.BreakerGuiltStrategy).Returns(guiltStrategy);
 			_buildBuster = new BuildBuster(_configSettings, _fixterStrategy, _guiltFactory);
 		}
 
@@ -127,20 +127,20 @@ namespace Cradiator.Tests.Model
 			_buildBuster.FindBreaker("zombie, freak, smurf").ShouldBe("smurf");
 		}
 
-        [Test]
-        public void CanBust_LastBreaker_With_1_NewMessageFormat()
-        {
-            SetUpBreaker(GuiltStrategyType.Last);
+		[Test]
+		public void CanBust_LastBreaker_With_1_NewMessageFormat()
+		{
+			SetUpBreaker(GuiltStrategyType.Last);
 
-            _buildBuster.FindBreaker("zombie").ShouldBe("zombie");
-        }
+			_buildBuster.FindBreaker("zombie").ShouldBe("zombie");
+		}
 
-        [Test]
-        public void CanBust_FirstBreaker_With_1_NewMessageFormat()
-        {
-            SetUpBreaker(GuiltStrategyType.First);
+		[Test]
+		public void CanBust_FirstBreaker_With_1_NewMessageFormat()
+		{
+			SetUpBreaker(GuiltStrategyType.First);
 
-            _buildBuster.FindBreaker("zombie").ShouldBe("zombie");
-        }
+			_buildBuster.FindBreaker("zombie").ShouldBe("zombie");
+		}
 	}
 }

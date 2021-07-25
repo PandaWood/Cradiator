@@ -7,7 +7,7 @@ namespace Cradiator.Tests.Audio
 {
 	[TestFixture]
 	[Category("Integration")]
-	[Ignore]
+	[Ignore("uses audio")]
 	public class AudioIntegration_Tests
 	{
 		[Test]

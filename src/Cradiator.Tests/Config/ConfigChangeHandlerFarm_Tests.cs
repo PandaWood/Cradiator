@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using Cradiator.Config;
 using Cradiator.Config.ChangeHandlers;
+using FakeItEasy;
 using NUnit.Framework;
-using Rhino.Mocks;
-using Shouldly;
 
 namespace Cradiator.Tests.Config
 {
@@ -16,7 +15,7 @@ namespace Cradiator.Tests.Config
 		[SetUp]
 		public void SetUp()
 		{
-			_updater = MockRepository.GenerateMock<IConfigChangeHandler>();
+			_updater = A.Fake<IConfigChangeHandler>();
 			_configSettings = new ConfigSettings();
 		}
 
@@ -26,19 +25,19 @@ namespace Cradiator.Tests.Config
 			var configUpdater = new ConfigChangeHandlerFarm(new List<IConfigChangeHandler> { _updater });
 			configUpdater.UpdateAll(_configSettings);
 
-			_updater.ShouldHaveBeenCalled(u=>u.ConfigUpdated(_configSettings));
+			A.CallTo(() => _updater.ConfigUpdated(_configSettings)).MustHaveHappened();
 		}
 
 		[Test]
 		public void CanUpdate_2_Updaters()
 		{
-			var updater2 = MockRepository.GenerateMock<IConfigChangeHandler>();
+			var updater2 = A.Fake<IConfigChangeHandler>();
 
-			var configUpdater = new ConfigChangeHandlerFarm(new List<IConfigChangeHandler> { _updater, updater2 });
+			var configUpdater = new ConfigChangeHandlerFarm(new List<IConfigChangeHandler> {_updater, updater2});
 			configUpdater.UpdateAll(_configSettings);
 
-            _updater.ShouldHaveBeenCalled(u => u.ConfigUpdated(_configSettings));
-            updater2.ShouldHaveBeenCalled(u => u.ConfigUpdated(_configSettings));
+			A.CallTo(() => _updater.ConfigUpdated(_configSettings)).MustHaveHappened();
+			A.CallTo(() => updater2.ConfigUpdated(_configSettings)).MustHaveHappened();
 		}
 	}
 }

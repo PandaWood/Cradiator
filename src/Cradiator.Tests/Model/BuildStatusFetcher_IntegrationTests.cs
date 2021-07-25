@@ -1,11 +1,11 @@
-﻿using System.Linq;
+using System.Linq;
 using Cradiator.Config;
 using Cradiator.Model;
 using Cradiator.Services;
 using Cradiator.Views;
+using FakeItEasy;
 using Ninject;
 using NUnit.Framework;
-using Rhino.Mocks;
 using Shouldly;
 
 namespace Cradiator.Tests.Model
@@ -23,11 +23,11 @@ namespace Cradiator.Tests.Model
 		[SetUp]
 		public void SetUp()
 		{
-			_view = MockRepository.GenerateMock<ICradiatorView>();
-			_configSettings = MockRepository.GenerateMock<IConfigSettings>();
-			_configSettings.Expect(c => c.ProjectNameRegEx).Return(".*").Repeat.Any();
-			_configSettings.Expect(c => c.CategoryRegEx).Return(".*").Repeat.Any();
-			_configSettings.Expect(c => c.ServerNameRegEx).Return(".*").Repeat.Any();
+			_view = A.Fake<ICradiatorView>();
+			_configSettings = A.Fake<IConfigSettings>();
+			A.CallTo(() => _configSettings.ProjectNameRegEx).Returns(".*");
+			A.CallTo(() => _configSettings.CategoryRegEx).Returns(".*");
+			A.CallTo(() => _configSettings.ServerNameRegEx).Returns(".*");
 
 			_kernel = new StandardKernel(new CradiatorNinjaModule(_view, _configSettings));
 			_factory = _kernel.Get<IWebClientFactory>();
@@ -46,10 +46,7 @@ namespace Cradiator.Tests.Model
 			}, "Unable to contact http://a.b.c.d.e.foo/ccnet/XmlStatusReport.aspx");
 		}
 
-		/// <summary>
-		/// this test is a little sensitive - and will fail if anything is going wrong at the thoughtworks URL
-		/// </summary>
-		[Test]
+		[Test, Ignore("this test is a little sensitive - and will fail if anything is going wrong at the thoughtworks URL")]
 		public void can_get_projects_from_a_realaddress()
 		{
 			var fetcher = 
@@ -57,7 +54,7 @@ namespace Cradiator.Tests.Model
 									 _configSettings, _factory);
 
 			var fetch = fetcher.Fetch().ToList();
-			fetch.Count().ShouldBeGreaterThan(0);
+			fetch.Count.ShouldBeGreaterThan(0);
 			fetch.ShouldContain(@"Project name=""CCNet""");
 		}
 	}

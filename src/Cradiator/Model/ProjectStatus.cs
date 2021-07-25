@@ -29,30 +29,17 @@ namespace Cradiator.Model
 			Name = name;
 		}
 
-		public string CurrentState
-		{
-			get { return (ProjectActivity == ProjectActivity.Building) ? BUILDING : LastBuildStatus; }
-		}
+		public string CurrentState => (ProjectActivity == ProjectActivity.Building) ? BUILDING : LastBuildStatus;
 
-		public bool IsBroken
-		{
-			get 
-			{ 
-				return LastBuildStatus.EqualsIgnoreCase(FAILURE) || 
-					   LastBuildStatus.EqualsIgnoreCase(EXCEPTION) || 
-					   LastBuildStatus.EqualsIgnoreCase(ERROR); 
-			}
-		}
+		public bool IsBroken =>
+			LastBuildStatus.EqualsIgnoreCase(FAILURE) || 
+			LastBuildStatus.EqualsIgnoreCase(EXCEPTION) || 
+			LastBuildStatus.EqualsIgnoreCase(ERROR);
 
-		public bool IsSuccessful
-		{
-			get 
-			{ 
-				return LastBuildStatus.EqualsIgnoreCase(SUCCESS) || 
-					   LastBuildStatus.EqualsIgnoreCase(NORMAL) ||
-					   LastBuildStatus.EqualsIgnoreCase(UNKNOWN) ; // CCNET unknown is when is project has not build yet.
-			}
-		}
+		public bool IsSuccessful =>
+			LastBuildStatus.EqualsIgnoreCase(SUCCESS) || 
+			LastBuildStatus.EqualsIgnoreCase(NORMAL) ||
+			LastBuildStatus.EqualsIgnoreCase(UNKNOWN); // CCNET unknown is when is project has not build yet.
 
 		public override bool Equals(object obj)
 		{

@@ -3,10 +3,9 @@ using Cradiator.App;
 using Cradiator.Config;
 using Cradiator.Model;
 using Cradiator.Views;
+using FakeItEasy;
 using Ninject;
 using NUnit.Framework;
-using Rhino.Mocks;
-using Shouldly;
 
 namespace Cradiator.Tests.Views
 {
@@ -23,14 +22,15 @@ namespace Cradiator.Tests.Views
 		[SetUp]
 		public void SetUp()
 		{
-			_view = Create.Mock<ICradiatorView>();
-			_configSettings = Create.Mock<IConfigSettings>();
-			_configSettings.Expect(c => c.ProjectNameRegEx).Return(".*").Repeat.Any();
-			_configSettings.Expect(c => c.CategoryRegEx).Return(".*").Repeat.Any();
+			_view = A.Fake<ICradiatorView>();
+			_configSettings = A.Fake<IConfigSettings>();
 
-			_skinLoader = Create.Mock<ISkinLoader>();
-			_screenUpdater = Create.Mock<IScreenUpdater>();
-			_configFileWatcher = Create.Mock<IConfigFileWatcher>();
+			A.CallTo(() => _configSettings.ProjectNameRegEx).Returns(".*");
+			A.CallTo(() => _configSettings.CategoryRegEx).Returns(".*");
+
+			_skinLoader = A.Fake<ISkinLoader>();
+			_screenUpdater = A.Fake<IScreenUpdater>();
+			_configFileWatcher = A.Fake<IConfigFileWatcher>();
 
 			var bootstrapper = new Bootstrapper(_configSettings, _view);
 			_kernel = bootstrapper.CreateKernel();
@@ -39,18 +39,17 @@ namespace Cradiator.Tests.Views
 			_kernel.Rebind<IConfigFileWatcher>().ToConstant(_configFileWatcher);
 		}
 
-		//TODO this test takes ages... can this be avoided?
-		[Test]
+		[Test, Ignore("test takes too long")]
 		[STAThread]
 		public void CanCreatePresenter()
 		{
 			var presenter = _kernel.Get<CradiatorPresenter>();
 			presenter.Init();
 
-			_configSettings.ShouldHaveBeenCalled(c => c.AddObserver(presenter));
-			_skinLoader.ShouldHaveBeenCalled(s => s.Load(Arg<Skin>.Is.Anything));
-			_screenUpdater.ShouldHaveBeenCalled(s => s.Update());
-			_configFileWatcher.ShouldHaveBeenCalled(c => c.Start());
+			A.CallTo(() => _configSettings.AddObserver(presenter)).MustHaveHappened();
+			A.CallTo(() => _skinLoader.Load(A<Skin>._)).MustHaveHappened();
+			A.CallTo(() => _screenUpdater.Update()).MustHaveHappened();
+			A.CallTo(() => _configFileWatcher.Start()).MustHaveHappened();
 		}
 	}
 }

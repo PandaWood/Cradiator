@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using Cradiator.Audio;
 using Cradiator.Config;
 using Cradiator.Model;
+using FakeItEasy;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace Cradiator.Tests.Audio
 {
@@ -26,8 +26,8 @@ namespace Cradiator.Tests.Audio
 		[SetUp]
 		public void SetUp()
 		{
-			_audioPlayer = MockRepository.GenerateMock<IAudioPlayer>();
-			_buildBuster = MockRepository.GenerateMock<IBuildBuster>();
+			_audioPlayer = A.Fake<IAudioPlayer>();
+			_buildBuster = A.Fake<IBuildBuster>();
 
 			_configSettings = new ConfigSettings
 			{
@@ -39,25 +39,31 @@ namespace Cradiator.Tests.Audio
 			_speechMaker = new SpeechMaker(_configSettings, new SpeechTextParser(_buildBuster));
 
 			_discJockey = new DiscJockey(_configSettings, _audioPlayer, _speechMaker);
-			_projectList1Success = new List<ProjectStatus> { new ProjectStatus("bla")
-			                                                 {
-			                                                 	LastBuildStatus = ProjectStatus.SUCCESS
-			                                                 } };
-			_projectList1Failure = new List<ProjectStatus> { new ProjectStatus("bla")
-			                                                 {
-			                                                 	LastBuildStatus = ProjectStatus.FAILURE
-			                                                 } };
+			_projectList1Success = new List<ProjectStatus>
+			{
+				new ProjectStatus("bla")
+				{
+					LastBuildStatus = ProjectStatus.SUCCESS
+				}
+			};
+			_projectList1Failure = new List<ProjectStatus>
+			{
+				new ProjectStatus("bla")
+				{
+					LastBuildStatus = ProjectStatus.FAILURE
+				}
+			};
 
 			_projectList2BothSuccess = new List<ProjectStatus>
 			{
 				new ProjectStatus("bla") {LastBuildStatus = ProjectStatus.SUCCESS},
-			    new ProjectStatus("bla2") {LastBuildStatus = ProjectStatus.SUCCESS}
+				new ProjectStatus("bla2") {LastBuildStatus = ProjectStatus.SUCCESS}
 			};
 
 			_projectList2BothFailure = new List<ProjectStatus>
 			{
 				new ProjectStatus("bla") {LastBuildStatus = ProjectStatus.FAILURE},
-			    new ProjectStatus("bla2") {LastBuildStatus = ProjectStatus.FAILURE}
+				new ProjectStatus("bla2") {LastBuildStatus = ProjectStatus.FAILURE}
 			};
 		}
 
@@ -65,40 +71,41 @@ namespace Cradiator.Tests.Audio
 		public void CanPlay_BuildStatus_If_SuccessThenFailure()
 		{
 			_discJockey.PlaySounds(_projectList1Success);
-			_audioPlayer.AssertWasNotCalled(a => a.Play(BrokenSound));
+			A.CallTo(() => _audioPlayer.Play(BrokenSound)).MustNotHaveHappened();
 			
 			_discJockey.PlaySounds(_projectList1Failure);
-			_audioPlayer.AssertWasCalled(a => a.Play(BrokenSound));
+			A.CallTo(() => _audioPlayer.Play(BrokenSound)).MustHaveHappened();
 		}
 
 		[Test]
 		public void DoesNotPlay_BuildStatus_If_2_FailuresInARow()
 		{
 			_discJockey.PlaySounds(_projectList1Failure);
-			_audioPlayer.AssertWasNotCalled(a => a.Play(BrokenSound));
+			A.CallTo(() => _audioPlayer.Play(BrokenSound)).MustNotHaveHappened();
 
 			_discJockey.PlaySounds(_projectList1Failure);
-			_audioPlayer.AssertWasNotCalled(a => a.Play(BrokenSound));
+			A.CallTo(() => _audioPlayer.Play(BrokenSound)).MustNotHaveHappened();
 		}
 
 		[Test]
 		public void CanPlay_BuildStatus_If_SuccessThenFail_WithMultipleStatus()
 		{
 			_discJockey.PlaySounds(_projectList2BothSuccess);
-			_audioPlayer.AssertWasNotCalled(a => a.Play(BrokenSound), a=>a.Repeat.Once());
+			A.CallTo(() => _audioPlayer.Play(BrokenSound)).MustNotHaveHappened();
 		
 			_discJockey.PlaySounds(_projectList2BothFailure);
-			_audioPlayer.AssertWasCalled(a => a.Play(BrokenSound), a=>a.Repeat.Once());
+			A.CallTo(() => _audioPlayer.Play(BrokenSound)).MustHaveHappened();
+
 		}
 
 		[Test]
 		public void DoesNotPlay_BuildStatus_If_OnlyFailures_WithMultipleStatus()
 		{
 			_discJockey.PlaySounds(_projectList2BothFailure);
-			_audioPlayer.AssertWasNotCalled(a => a.Play(BrokenSound));
+			A.CallTo(() => _audioPlayer.Play(BrokenSound)).MustNotHaveHappened();
 
 			_discJockey.PlaySounds(_projectList2BothFailure);
-			_audioPlayer.AssertWasNotCalled(a => a.Play(BrokenSound));
+			A.CallTo(() => _audioPlayer.Play(BrokenSound)).MustNotHaveHappened();
 		}
 
 		[Test]
@@ -108,33 +115,35 @@ namespace Cradiator.Tests.Audio
 
 			_discJockey.PlaySounds(_projectList1Success);
 			_discJockey.PlaySounds(_projectList1Failure);
-			_audioPlayer.AssertWasNotCalled(a => a.Play(BrokenSound));
+			A.CallTo(() => _audioPlayer.Play(BrokenSound)).MustNotHaveHappened();
 
-            _discJockey.ConfigUpdated(new ConfigSettings { PlaySounds = true, BrokenBuildSound = BrokenSound});
+			_discJockey.ConfigUpdated(new ConfigSettings { PlaySounds = true, BrokenBuildSound = BrokenSound});
 
 			_discJockey.PlaySounds(_projectList1Success);
 			_discJockey.PlaySounds(_projectList1Failure);
-			_audioPlayer.AssertWasCalled(a => a.Play(BrokenSound));
+			A.CallTo(() => _audioPlayer.Play(BrokenSound)).MustHaveHappened();
 		}
 
 		[Test]
 		public void CanPlay_Success_If_FailureThenSuccess()
 		{
 			_discJockey.PlaySounds(_projectList1Failure);
-			_audioPlayer.AssertWasNotCalled(a => a.Play(FixedSound));
+			A.CallTo(() => _audioPlayer.Play(FixedSound)).MustNotHaveHappened();
 
 			_discJockey.PlaySounds(_projectList1Success);
-			_audioPlayer.AssertWasCalled(a => a.Play(FixedSound));
+			A.CallTo(() => _audioPlayer.Play(FixedSound)).MustHaveHappened();
+
 		}
 
 		[Test]
 		public void DoesNotPlay_Success_If_2_SuccessesInARow()
 		{
 			_discJockey.PlaySounds(_projectList1Success);
-			_audioPlayer.AssertWasNotCalled(a => a.Play(FixedSound));
+			A.CallTo(() => _audioPlayer.Play(FixedSound)).MustNotHaveHappened();
+
 
 			_discJockey.PlaySounds(_projectList1Success);
-			_audioPlayer.AssertWasNotCalled(a => a.Play(FixedSound));
+			A.CallTo(() => _audioPlayer.Play(FixedSound)).MustNotHaveHappened();
 		}
 	}
 }

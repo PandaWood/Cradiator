@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 
 namespace Cradiator.ViewModels
@@ -35,21 +32,14 @@ namespace Cradiator.ViewModels
 			this.ServerName = ps.ServerName;
 			this.LastBuildTime = ps.LastBuildTime;
 
-			if (vs.ShowServerName)
-			{
-				this.ServerNameVisible = Visibility.Visible;
-			}
-			else
-			{
-				this.ServerNameVisible = Visibility.Collapsed;
-			}
+			this.ServerNameVisible = vs.ShowServerName ? Visibility.Visible : Visibility.Collapsed;
 		}
 
 		#region ProjectStatusProps
 
 		public string Name
 		{
-			get { return _name; }
+			get => _name;
 			set
 			{
 				if (_name == value) return;
@@ -60,7 +50,7 @@ namespace Cradiator.ViewModels
 
 		public string CurrentState
 		{
-			get { return _currentState; }
+			get => _currentState;
 			set
 			{
 				if (_currentState == value) return;
@@ -71,7 +61,7 @@ namespace Cradiator.ViewModels
 
 		public string CurrentMessage
 		{
-			get { return _CurrentMessage; }
+			get => _CurrentMessage;
 			set
 			{
 				if (_CurrentMessage == value) return;
@@ -82,7 +72,7 @@ namespace Cradiator.ViewModels
 
 		public string ProjectActivity
 		{
-			get { return _ProjectActivity; }
+			get => _ProjectActivity;
 			set
 			{
 				if (_ProjectActivity == value) return;
@@ -93,7 +83,7 @@ namespace Cradiator.ViewModels
 
 		public bool IsBroken
 		{
-			get { return _isBroken; }
+			get => _isBroken;
 			set
 			{
 				if (_isBroken == value) return;
@@ -104,7 +94,7 @@ namespace Cradiator.ViewModels
 
 		public bool IsSuccessful
 		{
-			get { return _isSuccessful; }
+			get => _isSuccessful;
 			set
 			{
 				if (_isSuccessful == value) return;
@@ -116,7 +106,7 @@ namespace Cradiator.ViewModels
 
 		public string ServerName
 		{
-			get { return _serverName; }
+			get => _serverName;
 
 			set
 			{
@@ -129,7 +119,7 @@ namespace Cradiator.ViewModels
 
 		public DateTime LastBuildTime
 		{
-			get { return _lastBuildTime; }
+			get => _lastBuildTime;
 			set
 			{
 				if (_lastBuildTime == value) return;
@@ -146,7 +136,7 @@ namespace Cradiator.ViewModels
 
 		public Visibility ServerNameVisible
 		{
-			get { return _serverNameVisible; }
+			get => _serverNameVisible;
 			set
 			{
 				if (_serverNameVisible == value) return;

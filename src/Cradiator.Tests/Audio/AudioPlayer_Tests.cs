@@ -2,9 +2,8 @@ using System.Collections.Generic;
 using System.Speech.Synthesis;
 using Cradiator.Audio;
 using Cradiator.Config;
+using FakeItEasy;
 using NUnit.Framework;
-using Rhino.Mocks;
-using Shouldly;
 
 namespace Cradiator.Tests.Audio
 {
@@ -17,35 +16,41 @@ namespace Cradiator.Tests.Audio
 		[SetUp]
 		public void SetUp()
 		{
-			_speechSynth = Create.Mock<ISpeechSynthesizer>();
-			_appLocation = Create.Stub<IAppLocation>();
-			_appLocation.Stub(a => a.DirectoryName).Return(@"c:\bla");
+			_speechSynth = A.Fake<ISpeechSynthesizer>();
+			_appLocation = A.Fake<IAppLocation>();
+			A.CallTo(() => _appLocation.DirectoryName).Returns(@"c:\bla");
 		}
 
 		[Test]
 		public void DoesNotSay_If_PlaySpeech_IsOff()
 		{
-			_speechSynth.Expect(s => s.GetInstalledVoices()).Return(new List<CradiatorInstalledVoice>());
+			//arrange
+			A.CallTo(() => _speechSynth.GetInstalledVoices()).Returns(new List<CradiatorInstalledVoice>());
 
+			//act
 			var audioPlayer = new AudioPlayer(_speechSynth,
 											  new ConfigSettings { PlaySpeech = false },
 											  new VoiceSelector(_speechSynth), _appLocation);
 			audioPlayer.Say(new PromptBuilder());
-			_speechSynth.AssertWasNotCalled(s=>s.SpeakAsync(Arg<PromptBuilder>.Is.Anything));
+
+			//assert
+			A.CallTo(() => _speechSynth.SpeakAsync(A<PromptBuilder>.Ignored)).MustNotHaveHappened();
 		}
 
 		[Test]
 		public void DoesSay_If_PlaySpeech_IsOn()
 		{
-			_speechSynth.Expect(s => s.GetInstalledVoices()).Return(new List<CradiatorInstalledVoice>
-																	{
-																		new CradiatorInstalledVoice("Bob")
-																	});
+			A.CallTo(() => _speechSynth.GetInstalledVoices()).Returns(new List<CradiatorInstalledVoice>
+			{
+				new CradiatorInstalledVoice("Bob")
+			});
+
 			var audioPlayer = new AudioPlayer(_speechSynth,
 											  new ConfigSettings { PlaySpeech = true, SpeechVoiceName = "Bob" },
 											  new VoiceSelector(_speechSynth), _appLocation);
 			audioPlayer.Say(new PromptBuilder());
-			_speechSynth.ShouldHaveBeenCalled(s => s.SpeakAsync(Arg<PromptBuilder>.Is.Anything));
+
+			A.CallTo(() => _speechSynth.SpeakAsync(A<PromptBuilder>.Ignored)).MustHaveHappened();
 		}
 
 		[Test]

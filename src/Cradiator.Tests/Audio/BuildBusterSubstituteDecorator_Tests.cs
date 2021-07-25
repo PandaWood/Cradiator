@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using Cradiator.Config;
 using Cradiator.Model;
+using FakeItEasy;
 using NUnit.Framework;
-using Rhino.Mocks;
 using Shouldly;
 
 namespace Cradiator.Tests.Audio
@@ -16,7 +16,7 @@ namespace Cradiator.Tests.Audio
 		[SetUp]
 		public void SetUp()
 		{
-			_buildBuster = Create.Stub<IBuildBuster>();
+			_buildBuster = A.Fake<IBuildBuster>();
 
 			_buildBusterDecorator =
 				new BuildBusterFullNameDecorator(_buildBuster, new ConfigSettings
@@ -32,7 +32,7 @@ namespace Cradiator.Tests.Audio
 		[Test]
 		public void CanSubstitute_Username_1stEntry()
 		{
-			_buildBuster.Stub(b => b.FindBreaker(Arg<string>.Is.Anything)).Return("jbloggs");
+			A.CallTo(() => _buildBuster.FindBreaker(A<string>.Ignored)).Returns("jbloggs");
 			var breaker = _buildBusterDecorator.FindBreaker("ignored");
 
 			breaker.ShouldBe("Joe Bloggs");
@@ -41,7 +41,7 @@ namespace Cradiator.Tests.Audio
 		[Test]
 		public void CanSubstitute_Username_2ndEntry()
 		{
-			_buildBuster.Stub(b => b.FindBreaker(Arg<string>.Is.Anything)).Return("am");
+			A.CallTo(() => _buildBuster.FindBreaker(A<string>.Ignored)).Returns("am");
 			var breaker = _buildBusterDecorator.FindBreaker("ignored");
 
 			breaker.ShouldBe("Ace McAwesome");

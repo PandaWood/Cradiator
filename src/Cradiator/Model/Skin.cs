@@ -12,10 +12,7 @@ namespace Cradiator.Model
 			_name = skinName;
 		}
 
-		public string Name
-		{
-			get { return _name; }
-		}
+		public string Name => _name;
 
 		public ResourceDictionary Resource { get; set; }
 
@@ -23,7 +20,7 @@ namespace Cradiator.Model
 		{
 			get
 			{
-				var skinPath = string.Format("./Skins/{0}Skin.xaml", Name);
+				var skinPath = $"./Skins/{Name}Skin.xaml";
 				return new Uri(skinPath, UriKind.Relative);
 			}
 		}

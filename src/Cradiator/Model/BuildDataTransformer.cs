@@ -25,52 +25,52 @@ namespace Cradiator.Model
 			if (xml.IsEmpty()) return new List<ProjectStatus>();
 
 			// caters for ccNet v1.5 new xml format for CurrentMessage (messages/message)
-			var query = (from p in
-							 (from project in XDocument.Parse(xml.Replace('\n', ' ').Trim())
-							   .Elements("Projects")
-							   .Elements("Project")
+			var query = from p in
+					from project in XDocument.Parse(xml.Replace('\n', ' ').Trim())
+						.Elements("Projects")
+						.Elements("Project")
 
-							  let name = project.Attribute("name").GetValue()
-							  let category = project.Attribute("category").GetValue()
-							  let serverName = project.Attribute("serverName").GetValue()
-							  let lastBuildTIme = project.Attribute("lastBuildTime").GetValue().HasValue() ? project.Attribute("lastBuildTime").GetValue() : DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.000")
+					let name = project.Attribute("name").GetValue()
+					let category = project.Attribute("category").GetValue()
+					let serverName = project.Attribute("serverName").GetValue()
+					let lastBuildTIme = project.Attribute("lastBuildTime").GetValue().HasValue() ? 
+						project.Attribute("lastBuildTime").GetValue() : DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.000")
 
-							  where _projectNameRegEx.Match(name).Success
-							  where _categoryRegEx.Match(category).Success
-							  where _serverNameRegEx.Match(serverName).Success
+					where _projectNameRegEx.Match(name).Success
+					where _categoryRegEx.Match(category).Success
+					where _serverNameRegEx.Match(serverName).Success
 
-							  select new ProjectStatus(name)
-							  {
-								  CurrentMessage = project.Attribute("CurrentMessage").GetValue(),
-								  LastBuildStatus = project.Attribute("lastBuildStatus").GetValue(),
-								  ProjectActivity = new ProjectActivity(project.Attribute("activity").GetValue()),
-								  ServerName = project.Attribute("serverName").GetValue(),
-								  LastBuildTime = System.Xml.XmlConvert.ToDateTime(lastBuildTIme, System.Xml.XmlDateTimeSerializationMode.Local)
-							  })
+					select new ProjectStatus(name)
+					{
+						CurrentMessage = project.Attribute("CurrentMessage").GetValue(),
+						LastBuildStatus = project.Attribute("lastBuildStatus").GetValue(),
+						ProjectActivity = new ProjectActivity(project.Attribute("activity").GetValue()),
+						ServerName = project.Attribute("serverName").GetValue(),
+						LastBuildTime = System.Xml.XmlConvert.ToDateTime(lastBuildTIme, System.Xml.XmlDateTimeSerializationMode.Local)
+					}
 						 
-						 join m in
-							 (from message in XDocument.Parse(xml)
-							   .Elements("Projects")
-							   .Elements("Project")
-							   .Elements("messages")
-							   .Elements("message")
-							  where message.Attribute("kind").GetValue() == "Breakers"
-							  select new
-							  {
-								  Message = message.Attribute("text").GetValue(),
-								  ProjectName = message.Parent.Parent.Attribute("name").GetValue(),
-							  }) on p.Name equals m.ProjectName into j
+				join m in
+					from message in XDocument.Parse(xml)
+						.Elements("Projects")
+						.Elements("Project")
+						.Elements("messages")
+						.Elements("message")
+					where message.Attribute("kind").GetValue() == "Breakers"
+					select new
+					{
+						Message = message.Attribute("text").GetValue(),
+						ProjectName = message.Parent.Parent.Attribute("name").GetValue(),
+					} on p.Name equals m.ProjectName into j
 						 
-						 from m in j.DefaultIfEmpty()
-						 select new ProjectStatus(p.Name)
-						 {
-							 CurrentMessage = m != null ? m.Message : p.CurrentMessage,
-							 LastBuildStatus = p.LastBuildStatus,
-							 ProjectActivity = p.ProjectActivity,
-							 ServerName = p.ServerName,
-							 LastBuildTime = p.LastBuildTime
-						 }
-						 );
+				from m in j.DefaultIfEmpty()
+				select new ProjectStatus(p.Name)
+				{
+					CurrentMessage = m != null ? m.Message : p.CurrentMessage,
+					LastBuildStatus = p.LastBuildStatus,
+					ProjectActivity = p.ProjectActivity,
+					ServerName = p.ServerName,
+					LastBuildTime = p.LastBuildTime
+				};
 
 			return query.ToArray();
 		}

@@ -1,7 +1,7 @@
 using Cradiator.Audio;
 using Cradiator.Model;
+using FakeItEasy;
 using NUnit.Framework;
-using Rhino.Mocks;
 using Shouldly;
 
 namespace Cradiator.Tests.Audio
@@ -16,19 +16,19 @@ namespace Cradiator.Tests.Audio
 		[SetUp]
 		public void SetUp()
 		{
-			_buildBuster = Create.Stub<IBuildBuster>();
+			_buildBuster = A.Fake<IBuildBuster>();
 			_speechTextParser = new SpeechTextParser(_buildBuster);
 
 			_failedProject = new ProjectStatus("ProjectZombie")
-			                 {
-			                 	LastBuildStatus = ProjectStatus.FAILURE,
-			                 };
+			{
+				LastBuildStatus = ProjectStatus.FAILURE,
+			};
 		}
 
 		[Test]
 		public void CanParseSentence_WithVariables_ProjectName_And_Breaker()
 		{
-			_buildBuster.Stub(b => b.FindBreaker(Arg<string>.Is.Anything)).Return("PandaWood");
+			A.CallTo(() => _buildBuster.FindBreaker(A<string>.Ignored)).Returns("PandaWood");
 
 			var parsedSentence = _speechTextParser.Parse(
 				"$ProjectName$, is broken.$Breaker$, you're fired!", _failedProject);
@@ -39,7 +39,7 @@ namespace Cradiator.Tests.Audio
 		[Test]
 		public void CanParse_Sentence_With_NoVariables_ForBackwardsCompatibility_And_Minimalism()
 		{
-			_buildBuster.Stub(b => b.FindBreaker(Arg<string>.Is.Anything)).Return("PandaWood");
+			A.CallTo(() => _buildBuster.FindBreaker(A<string>.Ignored)).Returns("PandaWood");
 
 			var parsedSentence = _speechTextParser.Parse("is broken", _failedProject);
 

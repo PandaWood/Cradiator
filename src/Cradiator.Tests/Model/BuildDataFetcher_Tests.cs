@@ -3,8 +3,8 @@ using System.Linq;
 using Cradiator.Config;
 using Cradiator.Model;
 using Cradiator.Services;
+using FakeItEasy;
 using NUnit.Framework;
-using Rhino.Mocks;
 using Shouldly;
 
 namespace Cradiator.Tests.Model
@@ -18,9 +18,9 @@ namespace Cradiator.Tests.Model
 		[SetUp]
 		public void SetUp()
 		{
-			_webClientFactory = Create.Stub<IWebClientFactory>();
-			_webClient = Create.Mock<IWebClient>();
-			_webClientFactory.Stub(w => w.GetWebClient(Arg<string>.Is.Anything)).Return(_webClient);
+			_webClientFactory = A.Fake<IWebClientFactory>();
+			_webClient = A.Fake<IWebClient>();
+			A.CallTo(() => _webClientFactory.GetWebClient(A<string>._)).Returns(_webClient);
 		}
 
 		[Test]
@@ -28,7 +28,7 @@ namespace Cradiator.Tests.Model
 		{
 			const string Hello = "hello";
 
-			_webClient.Expect(w => w.DownloadString(Arg<string>.Is.Anything)).Return(Hello);
+			A.CallTo(() => _webClient.DownloadString(A<string>._)).Returns(Hello);
 
 			var fetcher = new BuildDataFetcher(new ViewUrl("http://test"), new ConfigSettings(), _webClientFactory);
 			var fetchValue = fetcher.Fetch();
@@ -46,18 +46,19 @@ namespace Cradiator.Tests.Model
 				}, _webClientFactory);
 
 			fetcher.Fetch();
-			_webClient.AssertWasCalled(w => w.DownloadString(Arg<string>.Is.Equal(new Uri("http://bla"))), w => w.Repeat.Once());
+			A.CallTo(() => _webClient.DownloadString(A<string>.That.IsEqualTo("http://bla"))).MustHaveHappened(1, Times.Exactly);
 
 			fetcher.ConfigUpdated(new ConfigSettings { URL = "http://new"});
 			fetcher.Fetch();
-			_webClient.AssertWasCalled(w => w.DownloadString(Arg<string>.Is.Equal(new Uri("http://new"))), w => w.Repeat.Once());
+
+			A.CallTo(() => _webClient.DownloadString(A<string>.That.IsEqualTo("http://new"))).MustHaveHappened(1, Times.Exactly);
 		}
 
 		[Test]
 		public void can_fetch_multiple_urls()
 		{
-			_webClient.Expect(w => w.DownloadString(Arg<string>.Is.Anything)).Return("url1").Repeat.Once();
-			_webClient.Expect(w => w.DownloadString(Arg<string>.Is.Anything)).Return("url2").Repeat.Once();
+			A.CallTo(() => _webClient.DownloadString(A<string>._)).Returns("url2").NumberOfTimes(1);
+			A.CallTo(() => _webClient.DownloadString(A<string>._)).Returns("url1").NumberOfTimes(1);
 
 			var fetcher = new BuildDataFetcher(new ViewUrl("http://url1 http://url2"), 
 				new ConfigSettings(), _webClientFactory);
@@ -68,8 +69,8 @@ namespace Cradiator.Tests.Model
 			xmlResults[0].ShouldBe("url1");
 			xmlResults[1].ShouldBe("url2");
 
-			_webClient.AssertWasCalled(w => w.DownloadString(Arg<string>.Is.Equal(new Uri("http://url1"))));
-			_webClient.AssertWasCalled(w => w.DownloadString(Arg<string>.Is.Equal(new Uri("http://url2"))));
+			A.CallTo(() => _webClient.DownloadString(A<string>.That.IsEqualTo("http://url1"))).MustHaveHappened();
+			A.CallTo(() => _webClient.DownloadString(A<string>.That.IsEqualTo("http://url2"))).MustHaveHappened(); 
 		}
 	}
 }

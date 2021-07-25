@@ -4,6 +4,7 @@ using Cradiator.App;
 using Cradiator.Config;
 using Cradiator.Model;
 using Cradiator.Views;
+using FakeItEasy;
 using NUnit.Framework;
 using Shouldly;
 
@@ -15,8 +16,7 @@ namespace Cradiator.Tests.Model
 		[Test]
 		public void CanGet_AlreadyLoaded_Resource()
 		{
-			var boot = new Bootstrapper(Create.Stub<IConfigSettings>(),
-                                        Create.Stub<ICradiatorView>());
+			var boot = new Bootstrapper(A.Fake<IConfigSettings>(), A.Fake<ICradiatorView>());
 			boot.CreateKernel();
 
 			var skin1 = new Skin("Stack"); // these tests are reliant on xaml file names in the main assembly (Skin folder)

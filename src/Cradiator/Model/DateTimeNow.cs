@@ -12,7 +12,7 @@ namespace Cradiator.Model
 	{
 		public DateTime Now
 		{
-			get { return DateTime.Now; }
+			get => DateTime.Now;
 			set {  }
 		}
 	}
