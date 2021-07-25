@@ -71,7 +71,7 @@ namespace Cradiator.Tests.MigrateConfig
 </views>";
 			var strippedExpected = Regex.Replace(expected, @"[\r\n\t\s]", "");
 
-			Assert.That(strippedXml, Is.StringStarting(strippedExpected));
+			Assert.That(strippedXml, Does.StartWith(strippedExpected));
 		}
 	}
 }

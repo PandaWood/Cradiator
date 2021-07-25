@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Windows;
 using Cradiator.Commands;
 using Cradiator.Views;
@@ -19,7 +20,7 @@ namespace Cradiator.Tests.Commands
 		}
 
 		[Test]
-		[RequiresSTA]
+		[Apartment(ApartmentState.STA)]
 		public void GoesFullscreen_IfNotAlready_Fullscreen()
 		{
 			var window = new Window
@@ -41,7 +42,7 @@ namespace Cradiator.Tests.Commands
 		}
 
 		[Test]
-		[RequiresSTA]
+		[Apartment(ApartmentState.STA)]
 		public void GoesNotFullscreen_WhenAlready_FullScreen()
 		{
 			var window = new Window
