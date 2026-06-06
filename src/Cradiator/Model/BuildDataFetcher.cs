@@ -7,7 +7,7 @@ using Cradiator.Services;
 
 namespace Cradiator.Model
 {
-	public class BuildDataFetcher : IConfigObserver
+	public class BuildDataFetcher : IConfigObserver, IDisposable
 	{
 		readonly ViewUrl _viewUrl;
 		readonly IWebClientFactory _webClientFactory;
@@ -40,7 +40,17 @@ namespace Cradiator.Model
 		public void ConfigUpdated(ConfigSettings newSettings)
 		{
 			_viewUrl.Url = newSettings.URL;
+
+			// dispose the client being replaced, otherwise each config change
+			// leaks the underlying WebClient
+			var previousWebClient = _webClient;
 			_webClient = _webClientFactory.GetWebClient(newSettings.URL);
+			previousWebClient?.Dispose();
+		}
+
+		public void Dispose()
+		{
+			_webClient?.Dispose();
 		}
 	}
 }

@@ -16,5 +16,10 @@ namespace Cradiator.Services
 		{
 			return _webClient.DownloadString(new Uri(url));
 		}
+
+		public void Dispose()
+		{
+			_webClient.Dispose();
+		}
 	}
 }

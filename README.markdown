@@ -1,5 +1,4 @@
-*We're back to GitHub - this time for sure!*
-*But this does mean I've lost any stars or follows from the original repo*
+Cradiator has moved to [Xradiator](https://github.com/PandaWood/Xradiator) - a cross platform port using Avalonia.
 
 Cradiator is a Windows (WPF) app that displays a summary of Continuous Integration (CI) project statuses. It is basically an _Information Radiator_ for CI. Cradiator currently supports [Cruise Control](http://en.wikipedia.org/wiki/CruiseControl) (Java, .Net, Ruby) and [Team City](http://www.jetbrains.com/teamcity)
 

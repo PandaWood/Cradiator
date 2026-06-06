@@ -76,6 +76,9 @@ namespace Cradiator.Audio
 			{
 				soundFile = Path.Combine(_wavFileFolder, soundFileName);
 
+				// dispose the previously played sound before replacing it,
+				// otherwise each play leaks a SoundPlayer (stream + OS handle)
+				_soundPlayer?.Dispose();
 				_soundPlayer = new SoundPlayer(soundFile);
 				_soundPlayer.Play();
 			}

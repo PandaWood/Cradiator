@@ -2,7 +2,7 @@ using System;
 
 namespace Cradiator.Services
 {
-	public interface IWebClient
+	public interface IWebClient : IDisposable
 	{
 		string DownloadString(string url);
 	}

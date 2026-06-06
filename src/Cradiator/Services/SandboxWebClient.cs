@@ -18,5 +18,10 @@ namespace Cradiator.Services
 				return streamReader.ReadToEnd();
 			}
 		}
+
+		public void Dispose()
+		{
+			// nothing to dispose - the stream is scoped to each DownloadString call
+		}
 	}
 }
